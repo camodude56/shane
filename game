@@ -1,0 +1,2620 @@
+#include<iostream>
+#include<cstring>
+//the game
+{
+ExpGoal& = 500
+SCREEN 9
+start99:
+Score& = 0
+   THealth& = 45
+  Health& = 45
+Level& = 1
+WeapStr& = 0
+DidCheat$ = "No"
+WepHave$ = "Fist"
+ArmHave$ = "Skin (Your own)"
+SpareItem$ = "nodda"
+SpareItem2$ = "nothingness"
+SpareItem3$ = "nothin'"
+Start:
+CLS
+Namer:
+INPUT "Name"; Name$
+INPUT "Do you wish to load a game? (1) Yes (2) No"; Dummy%
+ if Dummy% = 1  goto Load
+ if Dummy% = 2  goto NameTest  else  goto Namer
+NameTest:
+ if Name$ = "Whovencroft" THEN Str& = 30
+ if Name$ = "Whovencroft" THEN Dex& = 30
+ if Name$ = "Whovencroft" THEN Con& = 30
+ if Name$ = "Whovencroft" THEN Gold& = 15000
+THealth& = Con& * 4
+Health& = THealth&
+ if Name$ = "Whovencroft" THEN  goto Start2
+PRINT "Input your Strength (STR), Dexterity (DEX), and Constitution (CON)."
+PRINT "They cannot be below 3 or above 20 and cannot equal above 50."
+INPUT "Strength"; Str&
+ if Str& = 99 THEN  goto GameOver1
+ if Str& = 69 THEN  goto StatCheat
+ if Str& >= 21 THEN PRINT "Too strong!"
+ if Str& >= 21 THEN  goto Start
+ if Str& <= 2 THEN PRINT "Too weak!"
+ if Str& <= 2 THEN  goto Start
+INPUT "Dexterity"; Dex&
+ if Dex& >= 21 THEN PRINT "Too fast!"
+ if Dex& >= 21 THEN  goto Start
+ if Dex& <= 2 THEN PRINT "Too slow!"
+ if Dex& <= 2 THEN  goto Start
+INPUT "Constitution"; Con&
+ if Con& >= 21 THEN PRINT "Too stout!"
+ if Con& >= 21 THEN  goto Start
+ if Con& <= 2 THEN PRINT "Too sickly!"
+ if Con& <= 2 THEN  goto Start
+INPUT "Gold * 10"; GoldS&
+ if GoldS& >= 21 THEN PRINT "Too rich!"
+ if GoldS& >= 21 THEN  goto Start
+ if GoldS& <= 2 THEN PRINT "Too poor!"
+ if GoldS& <= 2 THEN  goto Start
+THealth& = Con& * 4
+Health& = THealth&
+Gold& = GoldS& * 10
+Total& = Str& + Dex& + Con& + GoldS&
+ if Total& > 50 THEN PRINT "The total must be 50 or lower."
+ if Total& > 50 THEN  goto Start
+ if Total& < 50 THEN PRINT "You did not use all the points."
+PRINT "Do you wish to reinput them?"
+INPUT "(1) Yes (2) No"; tlat&
+ if tlat& = 1 THEN  goto Start
+ if tlat& = 2 THEN  goto Start2  else  goto Start
+Start2:
+CLS
+PRINT "Do you wish to  goto the (1)Arena (2)Armory (3)Training Hall (4)See your stats"
+PRINT "the (5)Inn or the (6)Tavern (7)See whats new? (8)Get a job! or"
+PRINT "(9) Save your game   (10) Load your game."
+INPUT Choice1&
+ if Choice1& = 1 THEN  goto Arena
+ if Choice1& = 2 THEN  goto Armor
+ if Choice1& = 3 THEN  goto Train
+ if Choice1& = 4 THEN  goto Stats
+ if Choice1& = 5 THEN  goto Inn
+ if Choice1& = 6 THEN  goto Tavern
+ if Choice1& = 7 THEN  goto WhatsNew
+ if Choice1& = 8 THEN  goto Job
+ if Choice1& = 9 THEN  goto Save
+ if Choice1& = 10 THEN  goto Load
+ if Choice1& = 99 THEN  goto GameOver1  else  goto Start2
+
+
+
+Arena:
+RatHealth& = 50
+SkelHealth& = 78
+FiendHealth& = 126
+CaveHealth& = 160
+PitHealth& = 213
+TarHealth& = 364
+DeathHealth& = 250
+LichHealth& = 338
+MancubHealth& = 424
+DridHealth& = 500
+WyHealth& = 600
+ZarHealth& = 756
+DragonHealth& = 780
+WillHealth& = 653
+TiHealth& = 1000
+Defe& = Dex& + ArmStr&
+TRing& = RRing& + LRing&
+
+
+PRINT "Do you wish to fight a (1)Weak (2)Medium (3)Strong (4)Very Strong"
+INPUT "(5)Brutal enemy or (6)leave "; AreCho&
+ if AreCho& = 1 THEN  goto AW
+ if AreCho& = 2 THEN  goto am
+ if AreCho& = 3 THEN  goto ASt
+ if AreCho& = 4 THEN  goto AVS
+ if AreCho& = 5 THEN  goto AB
+ if AreCho& = 6 THEN  goto Start2  else  goto Arena
+ if AreCho& = 0 THEN  goto Start2
+AW:
+PRINT "A Giant Rat has 50 Hit Points, Skeletons have 78, Fiends 126."
+INPUT "Do you wish to fight a (1)Giant Rat (2)Skeleton or a (3)Fiend"; AWCho&
+ if AWCho& = 1 THEN  goto AWGRat
+ if AWCho& = 2 THEN  goto AWSkel
+ if AWCho& = 3 THEN  goto AWFiend
+ if AWCho& = 0 THEN  goto Start2
+
+
+AWGRat:
+X& = 1
+ if Health& <= 0  goto gameover
+ if RatHealth& <= 0  goto AWGRWin
+PRINT "You have "; Health&; " left, The rat has "; RatHealth&; " left"
+INPUT "do you wish to (1)Attack or (2)Run"; AWGRFC&
+CLS
+ if AWGRFC& = 1 THEN  goto AWGRatt
+ if AWGRFC& = 2 THEN  goto Arena
+ if AWGRFC& = 2 THEN  goto AWGRRe  else  goto AWGRat
+
+AWGRatt:
+RANDOMIZE TIMER
+RatDef& = INT(RND * 12) + 8
+ if RatDef& - (Dex& + TRing&) <= 0  goto AWGRHit
+ if RatDef& - (Dex& + TRing&) > 0  goto AWGRMiss
+AWGRHit:
+ goto Damage
+AWGRHib:
+EDam& = (Str& - 3) + WeapDam&
+RatHealth& = RatHealth& - EDam&
+PRINT "You hit the Giant rat for "; EDam&; " Points of Damage!"
+ goto AWGRRe
+AWGRMiss:
+PRINT "You missed the giant rat!"
+ goto AWGRRe
+AWGRRe:
+RANDOMIZE TIMER
+ AWGRPo& = INT(RND * 25) + 16
+ if AWGRPo& >= Defe& THEN  goto AWGRRHit  else  goto AWGRRMiss
+AWGRRHit:
+RANDOMIZE TIMER
+RatDame& = INT(RND * 4) + 2
+PlayHp = PlayHp - RatDame&
+PRINT "You were hit for "; RatDame&; " Points of Damage!"
+Health& = Health& - RatDame&
+ goto AWGRat
+AWGRRMiss:
+PRINT "The giant rat Misses you!"
+ goto AWGRat:
+AWGRWin:
+RANDOMIZE TIMER
+AWGRGold& = INT(RND * 15) + 10 - (Level& * 3)
+AWGRExe& = INT(RND * 50) + 25 - (Level& * 6)
+ if AWGRGold& < 0 THEN AWGRGold& = 0
+ if AWGRExe& < 0 THEN AWGRExe& = 0
+PRINT "You have defeated the giant rat, you earn "; AWGRGold&; "gold and "; AWGRExe&; "Experience"
+Gold& = Gold& + AWGRGold&
+Exe& = Exe& + AWGRExe&
+ if Level& > 4 THEN Score& = Score& - 1
+Score& = Score& + 1
+INPUT "Press enter to continue"; Dummy$
+RANDOMIZE TIMER
+Suprise& = INT(RND * 40) + 1
+ if Suprise& = 15  goto Prize
+ goto Stats
+
+
+
+
+
+AWSkel:
+
+
+X& = 2
+ if Health& <= 0  goto gameover
+ if SkelHealth& <= 0  goto AWSWin
+PRINT "You have "; Health&; " left, The skeleton has "; SkelHealth&; " left"
+INPUT "do you wish to (1)Attack or (2)Run"; AWSFC&
+CLS
+ if AWSFC& = 1 THEN  goto AWSAtt
+ if AWSFC& = 2 THEN  goto Arena  else  goto AWSkel
+ if AWSFC& = 0 THEN  goto Start2
+
+AWSAtt:
+ goto Damage
+SkelDef& = INT(RND * 40) + 25
+ if SkelDef& - (Dex& + TRing&) <= 0  goto AWSHit
+ if SkelDef& - (Dex& + TRing&) > 0  goto AWSMiss
+AWSHit:
+ goto Damage
+AWSHib:
+EDam& = (Str& - 3) + WeapDam&
+SkelHealth& = SkelHealth& - EDam&
+PRINT "You hit the skeleton for "; EDam&; " Points of Damage!"
+ goto AWSRe
+AWSMiss:
+PRINT "You missed the skeleton!"
+ goto AWSRe
+AWSRe:
+RANDOMIZE TIMER
+ AWSPo& = INT(RND * 35) + 21
+ if AWSPo& >= Defe& THEN  goto AWSRHit  else  goto AWSRMiss
+AWSRHit:
+RANDOMIZE TIMER
+SkelDame& = INT(RND * 6) + 4
+PlayHp = PlayHp - SkelDame&
+PRINT "You were hit for "; SkelDame&; " Points of Damage!"
+Health& = Health& - SkelDame&
+ goto AWSkel
+AWSRMiss:
+PRINT "The skeleton Misses you!"
+ goto AWSkel:
+AWSWin:
+RANDOMIZE TIMER
+AWSGold& = INT(RND * 15) + 20 - (Level& * 3)
+AWSExe& = INT(RND * 50) + 50 - (Level& * 6)
+ if AWSGold& < 0 THEN AWSGold& = 0
+ if AWSExe& < 0 THEN AWSExe& = 0
+PRINT "You have defeated the skeleton, you earn "; AWSGold&; "gold and "; AWSExe&; "Experience"
+Gold& = Gold& + AWSGold&
+Exe& = Exe& + AWSExe&
+ if Level& > 6 THEN Score& = Score& - 1
+Score& = Score& + 1
+INPUT "Press enter to continue"; Dummy$
+Suprise& = INT(RND * 35) + 1
+ if Suprise& = 15  goto Prize
+ goto Stats
+
+
+
+
+AWFiend:
+X& = 3
+ if Health& <= 0  goto gameover
+ if FiendHealth& <= 0  goto AWFWin
+PRINT "You have "; Health&; " left, The fiend has "; FiendHealth&; " left"
+INPUT "do you wish to (1)Attack or (2)Run"; AWFFC&
+CLS
+ if AWFFC& = 1 THEN  goto AWFAtt
+ if AWFFC& = 2 THEN  goto Arena  else  goto AWFiend
+ if AWFFC& = 0 THEN  goto Start2
+
+AWFAtt:
+RANDOMIZE TIMER
+FiendDef& = INT(RND * 30) + 16
+ if FiendDef& - (Dex& + TRing&) <= 0  goto AWFHit
+ if FiendDef& - (Dex& + TRing&) > 0  goto AWFMiss
+AWFHit:
+ goto Damage
+AWFHib:
+EDam& = (Str& - 3) + WeapDam&
+FiendHealth& = FiendHealth& - EDam&
+PRINT "You hit the fiend for "; EDam&; " Points of Damage!"
+ goto AWFRe
+AWFMiss:
+PRINT "You missed the fiend!"
+ goto AWFRe
+AWFRe:
+RANDOMIZE TIMER
+ AWFPo& = INT(RND * 40) + 16
+ if AWFPo& >= Defe& THEN  goto AWFRHit  else  goto AWFRMiss
+AWFRHit:
+RANDOMIZE TIMER
+FiendDame& = INT(RND * 10) + 6
+PlayHp = PlayHp - FiendDame&
+PRINT "You were hit for "; FiendDame&; " Points of Damage!"
+Health& = Health& - FiendDame&
+ goto AWFiend
+AWFRMiss:
+PRINT "The Fiend Missed you!"
+ goto AWFiend:
+AWFWin:
+RANDOMIZE TIMER
+AWFGold& = INT(RND * 25) + 25 - (Level& * 3)
+AWFExe& = INT(RND * 100) + 76 - (Level& * 6)
+ if AWFGold& < 0 THEN AWFGold& = 0
+ if AWFExe& < 0 THEN AWFExe& = 0
+PRINT "You have defeated the fiend, you earn "; AWFGold&; "gold and "; AWFExe&; "Experience"
+Gold& = Gold& + AWFGold&
+Exe& = Exe& + AWFExe&
+ if Level& > 4 THEN Score& = Score& - 1
+ if Level& > 11 THEN Score& = Score& - 2
+Score& = Score& + 2
+INPUT "Press enter to continue"; Dummy$
+Suprise& = INT(RND * 32) + 1
+ if Suprise& = 15  goto Prize
+ goto Stats
+
+
+
+
+
+am:
+PRINT "A Golden Viper has 160 Hit Piont, Pit Fiends have 213, Terassque 264."
+INPUT "Do you wish to fight a (1)Golden Viper (2)Pit Fiend or a (3)Terassque"; AMCho&
+ if AMCho& = 1 THEN  goto AMCave
+ if AMCho& = 2 THEN  goto AMPit
+ if AMCho& = 3 THEN  goto AMTar
+ if AMCho& = 0 THEN  goto Start2
+
+
+
+
+AMCave:
+X& = 4
+ if Health& <= 0  goto gameover
+ if CaveHealth& <= 0  goto AMCWin
+PRINT "You have "; Health&; " left, The Golden Viper has "; CaveHealth&; " left"
+INPUT "do you wish to (1)Attack or (2)Run"; AMCFC&
+CLS
+ if AMCFC& = 1 THEN  goto AMCAtt
+ if AMCFC& = 2 THEN  goto Arena  else  goto AMCave
+ if AMCFC& = 0 THEN  goto Start2
+
+AMCAtt:
+RANDOMIZE TIMER
+CaveDef& = INT(RND * 20) + 31
+ if CaveDef& - (Dex& + TRing&) <= 0  goto AMCHit
+ if CaveDef& - (Dex& + TRing&) > 0  goto AMCMiss
+AMCHit:
+ goto Damage
+AMCHib:
+EDam& = (Str& - 3) + WeapDam&
+CaveHealth& = CaveHealth& - EDam&
+PRINT "You hit the Golden Viper for "; EDam&; " Points of Damage!"
+ goto AMCRe
+AMCMiss:
+PRINT "You missed the Viper!"
+ goto AMCRe
+AMCRe:
+RANDOMIZE TIMER
+ AMCPo& = INT(RND * 45) + 36
+ if AMCPo& >= Defe& THEN  goto AMCRHit  else  goto AMCRMiss
+AMCRHit:
+RANDOMIZE TIMER
+CaveDame& = INT(RND * 2) + 12
+PlayHp = PlayHp - CaveDame&
+PRINT "You were hit for "; CaveDame&; " Points of Damage!"
+Health& = Health& - CaveDame&
+ goto AMCave
+AMCRMiss:
+PRINT "The Viper Misses you!"
+ goto AMCave:
+AMCWin:
+RANDOMIZE TIMER
+AMCGold& = INT(RND * 55) + 56 - (Level& * 4)
+AMCExe& = INT(RND * 200) + 151 - (Level& * 6)
+ if AMCGold& < 0 THEN AMCGold& = 0
+ if AMCExe& < 0 THEN AMCExe& = 0
+PRINT "You have defeated the Golden Viper, you earn "; AMCGold&; "gold and "; AMCExe&; "Experience"
+Gold& = Gold& + AMCGold&
+Exe& = Exe& + AMCExe&
+ if Level& > 8 THEN Score& = Score& - 1
+ if Level& > 13 THEN Score& = Score& - 2
+Score& = Score& + 2
+INPUT "Press enter to continue"; Dummy$
+Suprise& = INT(RND * 29) + 1
+ if Suprise& = 15  goto Prize
+ goto Stats
+
+
+
+
+
+AMPit:
+X& = 5
+ if Health& <= 0  goto gameover
+ if PitHealth& <= 0  goto AMPWin
+PRINT "You have "; Health&; " left, The Pit Fiend has "; PitHealth&; " left"
+INPUT "do you wish to (1)Attack or (2)Run"; AMPFC&
+CLS
+ if AMPFC& = 1 THEN  goto AMPAtt
+ if AMPFC& = 2 THEN  goto Arena  else  goto AMPit
+ if AMPFC& = 0 THEN  goto Start2
+
+AMPAtt:
+RANDOMIZE TIMER
+PitDef& = INT(RND * 40) + 20
+ if PitDef& - (Dex& + TRing&) <= 0  goto AMPHit
+ if PitDef& - (Dex& + TRing&) > 0  goto AMPMiss
+AMPHit:
+ goto Damage
+AMPHib:
+EDam& = (Str& - 3) + WeapDam&
+PitHealth& = PitHealth& - EDam&
+PRINT "You hit the Pit Fiend"; EDam&; " Points of Damage!"
+ goto AMPRe
+AMPMiss:
+PRINT "You missed the Pit Fiend!"
+ goto AMPRe
+AMPRe:
+RANDOMIZE TIMER
+ AMPPo& = INT(RND * 50) + 41
+ if AMPPo& >= Defe& THEN  goto AMPRHit  else  goto AMPRMiss
+AMPRHit:
+RANDOMIZE TIMER
+PitDame& = INT(RND * 10) + 16
+PlayHp = PlayHp - PitDame&
+PRINT "You were hit for "; PitDame&; " Points of Damage!"
+Health& = Health& - PitDame&
+ goto AMPit
+AMPRMiss:
+PRINT "The Pit Fiend Misses you!"
+ goto AMPit:
+AMPWin:
+RANDOMIZE TIMER
+AMPGold& = INT(RND * 100) + 51 - (Level& * 3)
+AMPExe& = INT(RND * 150) + 301 - (Level& * 6)
+ if AMPGold& < 0 THEN AMPGold& = 0
+ if AMPExe& < 0 THEN AMPExe& = 0
+PRINT "You have defeated the Pit Fiend, you earn "; AMPGold&; "gold and "; AMPExe&; "Experience"
+Gold& = Gold& + AMPGold&
+Exe& = Exe& + AMPExe&
+ if Level& > 7 THEN Score& = Score& - 1
+ if Level& > 13 THEN Score& = Score& - 2
+Score& = Score& + 2
+INPUT "Press enter to continue"; Dummy$
+Suprise& = INT(RND * 25) + 1
+ if Suprise& = 15  goto Prize
+ goto Stats
+
+
+
+
+AMTar:
+X& = 6
+ if Health& <= 0  goto gameover
+ if TarHealth& <= 0  goto AMTWin
+PRINT "You have "; Health&; " left, The Terassque has "; TarHealth&; " left"
+INPUT "do you wish to (1)Attack or (2)Run"; AMTFC&
+CLS
+ if AMTFC& = 1 THEN  goto AMTAtt
+ if AMTFC& = 2 THEN  goto Arena  else  goto AMTar
+ if AMTFC& = 0 THEN  goto Start2
+
+AMTAtt:
+RANDOMIZE TIMER
+TarDef& = INT(RND * 15) + 16
+ if TarDef& - (Dex& + TRing&) <= 0  goto AMTHit
+ if TarDef& - (Dex& + TRing&) > 0  goto AMTMiss
+AMTHit:
+ goto Damage
+AMTHib:
+EDam& = (Str& - 3) + WeapDam&
+TarHealth& = TarHealth& - EDam&
+PRINT "You hit the Terassque for "; EDam&; " Points of Damage!"
+ goto AMTRe
+AMTMiss:
+PRINT "You missed the Terassque!"
+ goto AMTRe
+AMTRe:
+RANDOMIZE TIMER
+ AMTPo& = INT(RND * 45) + 56
+ if AMTPo& >= Defe& THEN  goto AMTRHit  else  goto AMTRMiss
+AMTRHit:
+RANDOMIZE TIMER
+TarDame& = INT(RND * 18) + 9
+PlayHp = PlayHp - TarDame&
+PRINT "You were hit for "; TarDame&; " Points of Damage!"
+Health& = Health& - TarDame&
+ goto AMTar
+AMTRMiss:
+PRINT "The Terassque Missed you!"
+ goto AMTar:
+AMTWin:
+RANDOMIZE TIMER
+AMTGold& = INT(RND * 100) + 75 - (Level& * 3)
+AMTExe& = INT(RND * 200) + 250 - (Level& * 6)
+ if AMTGold& < 0 THEN AMTGold& = 0
+ if AMTExe& < 0 THEN AMTExe& = 0
+PRINT "You have defeated the fiend, you earn "; AMTGold&; "gold and "; AMTExe&; "Experience"
+Gold& = Gold& + AMTGold&
+Exe& = Exe& + AMTExe&
+ if Level& > 8 THEN Score& = Score& - 1
+ if Level& > 13 THEN Score& = Score& - 2
+ if Level& > 17 THEN Score& = Score& - 3
+Score& = Score& + 3
+INPUT "Press enter to continue"; Dummy$
+Suprise& = INT(RND * 23) + 1
+ if Suprise& = 15  goto Prize
+ goto Stats
+
+
+
+
+
+
+
+ASt:
+PRINT "Death Knights have 250 Hit Piont, Liches have 338, Mancubi 424."
+INPUT "Do you wish to fight a (1)Death Knight (2)Lich or a (3)Mancubus"; ASCho&
+ if ASCho& = 1 THEN  goto ASDKni
+ if ASCho& = 2 THEN  goto ASLich
+ if ASCho& = 3 THEN  goto ASMancub
+ if AWCho& = 0 THEN  goto Start2
+
+ASDKni:
+X& = 7
+ if Health& <= 0  goto gameover
+ if DeathHealth& <= 0  goto ASDKWin
+PRINT "You have "; Health&; " left, The Death Knight has "; DeathHealth&; " left"
+INPUT "do you wish to (1)Attack or (2)Run"; ASDKFC&
+CLS
+ if ASDKFC& = 1 THEN  goto ASDKAtt
+ if ASDKFC& = 2 THEN  goto Arena  else  goto ASDKni
+ if ASDKFC& = 0 THEN  goto Start2
+
+ASDKAtt:
+RANDOMIZE TIMER
+DeathDef& = INT(RND * 30) + 40
+ if DeathDef& - (Dex& + TRing&) <= 0  goto ASDKHit
+ if DeathDef& - (Dex& + TRing&) > 0  goto ASDKMiss
+ASDKHit:
+ goto Damage
+ASDKHib:
+EDam& = (Str& - 3) + WeapDam&
+DeathHealth& = DeathHealth& - EDam&
+PRINT "You hit the Death Knight for "; EDam&; " Points of Damage!"
+ goto ASDKRe
+ASDKMiss:
+PRINT "You missed the Death Knight!"
+ goto ASDKRe
+ASDKRe:
+RANDOMIZE TIMER
+ ASDKPo& = INT(RND * 90) + 66
+ if ASDKPo& >= Defe& THEN  goto ASDKRHit  else  goto ASDKRMiss
+ASDKRHit:
+RANDOMIZE TIMER
+DeathDame& = INT(RND * 40) + 12
+PlayHp = PlayHp - DeathDame&
+PRINT "You were hit for "; DeathDame&; " Points of Damage!"
+Health& = Health& - DeathDame&
+ goto ASDKni
+ASDKRMiss:
+PRINT "The Death Knight Missed!"
+ goto ASDKni:
+ASDKWin:
+RANDOMIZE TIMER
+ASDKGold& = INT(RND * 150) + 250 - (Level& * 3)
+ASDKExe& = INT(RND * 350) + 350 - (Level& * 6)
+ if ASDKGold& < 0 THEN ASDKGold& = 0
+ if ASDKExe& < 0 THEN ASDKExe& = 0
+PRINT "You have defeated the Death Knight, you earn "; ASDKGold&; "gold and "; ASDKExe&; "Experience"
+Gold& = Gold& + ASDKGold&
+Exe& = Exe& + ASDKExe&
+ if Level& > 8 THEN Score& = Score& - 1
+ if Level& > 13 THEN Score& = Score& - 2
+ if Level& > 17 THEN Score& = Score& - 3
+ if Level& > 20 THEN Score& = Score& - 4
+ if Level& > 24 THEN Score& = Score& - 5
+Score& = Score& + 5
+INPUT "Press enter to continue"; Dummy$
+Suprise& = INT(RND * 21) + 1
+ if Suprise& = 15  goto Prize
+ goto Stats
+
+
+
+
+
+ASLich:
+X& = 8
+ if Health& <= 0  goto gameover
+ if LichHealth& <= 0  goto ASLWin
+PRINT "You have "; Health&; " left, The Lich has "; LichHealth&; " left"
+INPUT "do you wish to (1)Attack or (2)Run"; ASLFC&
+CLS
+ if ASLFC& = 1 THEN  goto ASLAtt
+ if ASLFC& = 2 THEN  goto Arena  else  goto ASLich
+ if ASLFC& = 0 THEN  goto Start2
+
+ASLAtt:
+RANDOMIZE TIMER
+LichDef& = INT(RND * 75) + 1
+ if LichDef& - (Dex& + TRing&) <= 0  goto ASLHit
+ if LichDef& - (Dex& + TRing&) > 0  goto ASLMiss
+ASLHit:
+ goto Damage
+ASLHib:
+EDam& = (Str& - 3) + WeapDam&
+LichHealth& = LichHealth& - EDam&
+PRINT "You hit the Lich for "; EDam&; " Points of Damage!"
+ goto ASLRe
+ASLMiss:
+PRINT "You missed!"
+ goto ASLRe
+ASLRe:
+RANDOMIZE TIMER
+ ASLPo& = INT(RND * 130) + 1
+ if ASLPo& >= Defe& THEN  goto ASLRHit  else  goto ASLRMiss
+ASLRHit:
+RANDOMIZE TIMER
+LichDame& = INT(RND * 45) + 1
+PlayHp = PlayHp - LichDame&
+PRINT "You were hit for "; LichDame&; " Points of Damage!"
+Health& = Health& - LichDame&
+ goto ASLich
+ASLRMiss:
+PRINT "The Lich Misses you!"
+ goto ASLich:
+ASLWin:
+RANDOMIZE TIMER
+ASLGold& = INT(RND * 100) + 51 - (Level& * 3)
+ASLExe& = INT(RND * 500) + 101 - (Level& * 6)
+ if ASLGold& < 0 THEN ASLGold& = 0
+ if ASLExe& < 0 THEN ASLExe& = 0
+PRINT "You have defeated the Lich, you earn "; ASLGold&; "gold and "; ASLExe&; "Experience"
+Gold& = Gold& + ASLGold&
+Exe& = Exe& + ASLExe&
+ if Level& > 8 THEN Score& = Score& - 1
+ if Level& > 13 THEN Score& = Score& - 2
+ if Level& > 17 THEN Score& = Score& - 3
+ if Level& > 21 THEN Score& = Score& - 4
+ if Level& > 25 THEN Score& = Score& - 5
+ if Level& > 28 THEN Score& = Score& - 6
+Score& = Score& + 6
+INPUT "Press enter to continue"; Dummy$
+Suprise& = INT(RND * 18) + 1
+ if Suprise& = 15  goto Prize
+ goto Stats
+
+
+
+
+
+ASMancub:
+X& = 9
+ if Health& <= 0  goto gameover
+ if MancubHealth& <= 0  goto ASMWin
+PRINT "You have "; Health&; " left, The Mancubus has "; MancubHealth&; " left"
+INPUT "do you wish to (1)Attack or (2)Run"; ASMFC&
+CLS
+ if ASMFC& = 1 THEN  goto ASMAtt
+ if ASMFC& = 2 THEN  goto Arena  else  goto ASMancub
+ if ASMFC& = 0 THEN  goto Start2
+
+ASMAtt:
+RANDOMIZE TIMER
+MancubDef& = INT(RND * 50) + 50
+ if MancubDef& - (Dex& + TRing&) <= 0  goto ASMHit
+ if MancubDef& - (Dex& + TRing&) > 0  goto ASMMiss
+ASMHit:
+ goto Damage
+ASMHib:
+EDam& = (Str& - 3) + WeapDam&
+MancubHealth& = MancubHealth& - EDam&
+PRINT "You hit the Mancubus for "; EDam&; " Points of Damage!"
+ goto ASMRe
+ASMMiss:
+PRINT "You missed the Mancubus!"
+ goto ASMRe
+ASMRe:
+RANDOMIZE TIMER
+ ASMPo& = INT(RND * 70) + 81
+ if ASMPo& >= Defe& THEN  goto ASMRHit  else  goto ASMRMiss
+ASMRHit:
+RANDOMIZE TIMER
+MancubDame& = INT(RND * 45) + 36
+PlayHp& = PlayHp& - MancubDame&
+PRINT "You were hit for "; MancubDame&; " Points of Damage!"
+Health& = Health& - MancubDame&
+ goto ASMancub
+ASMRMiss:
+PRINT "The Mancubus Missed!"
+ goto ASMancub:
+ASMWin:
+RANDOMIZE TIMER
+ASMGold& = INT(RND * 100) + 200 - (Level& * 3)
+ASMExe& = INT(RND * 500) + 750 - (Level& * 6)
+ if ASMGold& < 0 THEN ASMGold& = 0
+ if ASMExe& < 0 THEN ASMExe& = 0
+PRINT "You have defeated the Mancubus, you earn "; ASMGold&; "gold and "; ASMExe&; "Experience"
+Gold& = Gold& + ASMGold&
+Exe& = Exe& + ASMExe&
+ if Level& > 10 THEN Score& = Score& - 1
+ if Level& > 15 THEN Score& = Score& - 2
+ if Level& > 19 THEN Score& = Score& - 3
+ if Level& > 23 THEN Score& = Score& - 4
+ if Level& > 27 THEN Score& = Score& - 5
+ if Level& > 30 THEN Score& = Score& - 6
+ if Level& > 34 THEN Score& = Score& - 7
+Score& = Score& + 7
+INPUT "Press enter to continue"; Dummy$
+Suprise& = INT(RND * 16) + 1
+ if Suprise& = 5  goto Prize
+ goto Stats
+
+
+
+AVS:
+PRINT "A Drider has 500 Hit Points, Wyvern has 600, a Zartan has 756."
+INPUT "Do you wish to fight a (1)Drider (2)Wyvern or a (3)Zartan"; AVSCho&
+ if AVSCho& = 1 THEN  goto AVDrid
+ if AVSCho& = 2 THEN  goto AVWy
+ if AVSCho& = 3 THEN  goto AVZar
+ if AVSCho& = 0 THEN  goto Start2
+
+
+AVDrid:
+X& = 10
+ if Health& <= 0  goto gameover
+ if DridHealth& <= 0  goto AVDWin
+PRINT "You have "; Health&; " left, The Drider"; DridHealth&
+INPUT "do you wish to (1)Attack or (2)Run"; AVDFC&
+CLS
+ if AVDFC& = 1 THEN  goto AVDAtt
+ if AVDFC& = 2 THEN  goto Arena
+
+AVDAtt:
+RANDOMIZE TIMER
+DridDef& = int(RND * 80) + 36
+ if DridDef& - (Dex& + TRing&) <= 0  goto AVDHit
+ if DridDef& - (Dex& + TRing&) > 0  goto AVDMiss
+AVDHit:
+ goto Damage
+AVDHib:
+EDam& = (Str& - 3) + WeapDam&
+DridHealth& = DridHealth& - EDam&
+PRINT "You hit the Drider for "; EDam&; " Points of Damage!"
+ goto AVDRe
+AVDMiss:
+PRINT "You missed the Drider!"
+ goto AVDRe
+AVDRe:
+RANDOMIZE TIMER
+ AVDPo& = int(RND * 90) + 66
+ if AVDPo& >= Defe& THEN  goto AVDRHit  else  goto AVDRMiss
+AVDRHit:
+RANDOMIZE TIMER
+DridDame& = INT(RND * 55) + 26
+PlayHp = PlayHp - DridDame&
+PRINT "You were hit for "; DridDame&; " Points of Damage!"
+Health& = Health& - DridDame&
+ goto AVDrid
+AVDRMiss:
+PRINT "The Drider missed!"
+ goto AVDrid:
+AVDWin:
+RANDOMIZE TIMER
+AVDGold& = int(RND * 30) + 40 - (Level& * 3)
+AVDExe& = int(RND * 250) + 250 - (Level& * 6)
+ if AVDGold& < 0 THEN AVDGold& = 0
+ if AVDExe& < 0 THEN AVDExe& = 0
+PRINT "You have defeated the Drider, you earn "; AVDGold&; "gold and "; AVDExe&; "Experience"
+Gold& = Gold& + AVDGold&
+Exe& = Exe& + AVDExe&
+ if Level& > 11 THEN Score& = Score& - 1
+ if Level& > 15 THEN Score& = Score& - 2
+ if Level& > 21 THEN Score& = Score& - 3
+ if Level& > 25 THEN Score& = Score& - 4
+ if Level& > 28 THEN Score& = Score& - 5
+ if Level& > 31 THEN Score& = Score& - 6
+ if Level& > 34 THEN Score& = Score& - 7
+ if Level& > 38 THEN Score& = Score& - 8
+Score& = Score& + 8
+INPUT "Press enter to continue"; Dummy$
+Suprise& = int(RND * 13) + 1
+ if Suprise& = 5  goto Prize
+ goto Stats
+
+
+
+
+
+AVWy:
+X& = 11
+ if Health& <= 0  goto gameover
+ if WyHealth& <= 0  goto AVWWin
+PRINT "You have "; Health&; " left, The Wyvern has "; WyHealth&; " left"
+INPUT "do you wish to (1)Attack or (2)Run"; AVWFC&
+CLS
+ if AVWFC& = 1 THEN  goto AVWAtt
+ if AVWFC& = 2 THEN  goto Arena  else  goto AVWy
+ if AVWFC& = 0 THEN  goto Start2
+
+AVWAtt:
+RANDOMIZE TIMER
+WyDef& = int(RND * 100) + 76
+ if WyDef& - (Dex& + TRing&) <= 0  goto AVWHit
+ if WyDef& - (Dex& + TRing&) > 0  goto AVWMiss
+AVWHit:
+ goto Damage
+AVWHib:
+EDam& = (Str& - 3) + WeapDam&
+WyHealth& = WyHealth& - EDam&
+PRINT "You hit the Wyvern for "; EDam&; " Points of Damage!"
+ goto AVWRe
+AVWMiss:
+PRINT "You missed the Wyvern!"
+ goto AVWRe
+AVWRe:
+RANDOMIZE TIMER
+ AVWPo& = int(RND * 85) + 81
+ if AVWPo& >= Defe& THEN  goto AVWRHit  else  goto AVWRMiss
+AVWRHit:
+RANDOMIZE TIMER
+WyDame& = int(RND * 30) + 46
+PlayHp = PlayHp - WyDame&
+PRINT "You were hit for "; WyDame&; " Points of Damage!"
+Health& = Health& - WyDame&
+ goto AVWy
+AVWRMiss:
+PRINT "The Wyvern Misses you!"
+ goto AVWy:
+AVWWin:
+RANDOMIZE TIMER
+ if AVWGold& < 0 THEN AVWGold& = 0
+ if AVWExe& < 0 THEN AVWExe& = 0
+AVWGold& = int(RND * 250) + 101 - (Level& * 3)
+AVWExe& = int(RND * 450) + 550 - (Level& * 6)
+PRINT "You have defeated the Wyvern, you earn "; AVWGold&; "gold and "; AVWExe&; "Experience"
+Gold& = Gold& + AVWGold&
+Exe& = Exe& + AVWExe&
+ if Level& > 11 THEN Score& = Score& - 1
+ if Level& > 15 THEN Score& = Score& - 2
+ if Level& > 21 THEN Score& = Score& - 3
+ if Level& > 25 THEN Score& = Score& - 4
+ if Level& > 28 THEN Score& = Score& - 5
+ if Level& > 31 THEN Score& = Score& - 6
+ if Level& > 34 THEN Score& = Score& - 7
+ if Level& > 38 THEN Score& = Score& - 8
+Score& = Score& + 8
+INPUT "Press enter to continue"; Dummy$
+Suprise& = int(RND * 11) + 1
+ if Suprise& = 5  goto Prize
+ goto Stats
+
+
+
+
+AVZar:
+X& = 12
+ if Health& <= 0  goto gameover
+ if ZarHealth& <= 0  goto AVZWin
+PRINT "You have "; Health&; " left, The Zartan has "; ZarHealth&; " left"
+INPUT "do you wish to (1)Attack or (2)Run"; AVZFC&
+CLS
+ if AVZFC& = 1 THEN  goto AVZAtt
+ if AVZFC& = 2 THEN  goto Arena  else  goto AVZar
+ if AVZFC& = 0 THEN  goto Start2
+
+AVZAtt:
+RANDOMIZE TIMER
+ZarDef& = INT(RND * 100) + 96
+ if ZarDef& - (Dex& + TRing&) <= 0  goto AVZHit
+ if ZarDef& - (Dex& + TRing&) > 0  goto AVZMiss
+AVZHit:
+RANDOMIZE TIMER
+AVZHib:
+ goto Damage
+EDam& = (Str& - 3) + WeapDam&
+ZarHealth& = ZarHealth& - EDam&
+PRINT "You hit the Zartan for "; EDam&; " Points of Damage!"
+ goto AVZRe
+AVZMiss:
+PRINT "You missed!"
+ goto AVZRe
+AVZRe:
+RANDOMIZE TIMER
+ AVZPo& = INT(RND * 70) + 96
+ if AVZPo& >= Defe& THEN  goto AVZRHit  else  goto AVZRMiss
+AVZRHit:
+RANDOMIZE TIMER
+ZarDame& = int(RND * 40) + 41
+PlayHp = PlayHp - ZarDame&
+PRINT "You were hit for "; ZarDame&; " Points of Damage!"
+Health& = Health& - ZarDame&
+ goto AVZar
+AVZRMiss:
+PRINT "The Zartan Missed you!"
+ goto AVZar:
+AVZWin:
+RANDOMIZE TIMER
+AVZGold& = int(RND * 60) + 76 - (Level& * 3)
+AVZExe& = int(RND * 100) + 500 - (Level& * 6)
+ if AVZGold& < 0 THEN AVZGold& = 0
+ if AVZExe& < 0 THEN AVZExe& = 0
+PRINT "You have defeated the Zartan, you earn "; AVZGold&; "gold and "; AVZExe&; "Experience"
+Gold& = Gold& + AVZGold&
+Exe& = Exe& + AVZExe&
+ if Level& > 11 THEN Score& = Score& - 1
+ if Level& > 15 THEN Score& = Score& - 2
+ if Level& > 21 THEN Score& = Score& - 3
+ if Level& > 25 THEN Score& = Score& - 4
+ if Level& > 28 THEN Score& = Score& - 5
+ if Level& > 31 THEN Score& = Score& - 6
+ if Level& > 34 THEN Score& = Score& - 7
+ if Level& > 38 THEN Score& = Score& - 8
+ if Level& > 41 THEN Score& = Score& - 9
+ if Level& > 46 THEN Score& = Score& - 10
+Score& = Score& + 10
+INPUT "Press enter to continue"; Dummy$
+Suprise& = int(RND * 7) + 1
+ if Suprise& = 5  goto Prize
+ goto Stats
+
+
+
+
+
+AB:
+X& = 13
+PRINT "Dragons have 780 Hit Points, Will 'o' wisps have 653, Ti'nar have 1000."
+INPUT "Do you wish to fight a (1)Dragon (2)Will 'o' wisp or a (3)Ti'nar"; ABCho&
+ if ABCho& = 1 THEN  goto ABDrag
+ if ABCho& = 2 THEN  goto ABWill
+ if ABCho& = 3 THEN  goto ABTi
+ if ABCho& = 0 THEN  goto Start2
+
+ABDrag:
+ if Health& <= 0  goto gameover
+ if DragonHealth& <= 0  goto ABDWin
+PRINT "You have "; Health&; " left, The Dragon has "; DragonHealth&; " left"
+INPUT "do you wish to (1)Attack or (2)Run"; ABDFC&
+CLS
+ if ABDFC& = 1 THEN  goto ABDAtt
+ if ABDFC& = 2 THEN  goto Arena  else  goto ABDrag
+
+ABDAtt:
+RANDOMIZE TIMER
+DragDef& = int(RND * 140) + 71
+ if DragDef& - (Dex& + TRing&) <= 0  goto ABDHit
+ if DragDef& - (Dex& + TRing&) > 0  goto ABDMiss
+ABDHit:
+ goto Damage
+ABDHib:
+EDam& = (Str& - 3) + WeapDam&
+DragonHealth& = DragonHealth& - EDam&
+PRINT "You hit the Dragon for "; EDam&; " Points of Damage!"
+ goto ABDRe
+ABDMiss:
+PRINT "You missed the Dragon!"
+ goto ABDRe
+ABDRe:
+RANDOMIZE TIMER
+ ABDPo& = int(RND * 70) + 76
+ if ABDPo& >= Defe& THEN  goto ABDRHit  else  goto ABDRMiss
+ABDRHit:
+RANDOMIZE TIMER
+DragDame& = INT(RND * 100) + 10
+PlayHp = PlayHp - DragDame&
+PRINT "You were hit for "; DragDame&; " Points of Damage!"
+Health& = Health& - DragDame&
+ goto ABDrag
+ABDRMiss:
+PRINT "The Dragon Missed!"
+ goto ABDrag:
+ABDWin:
+RANDOMIZE TIMER
+ABDGold& = int(RND * 50) + 501 - (Level& * 3)
+ABDExe& = int(RND * 1500) + 501 - (Level& * 6)
+ if ABDGold& < 0 THEN ABDGold& = 0
+ if ABDExe& < 0 THEN ABDExe& = 0
+PRINT "You have defeated the Dragon, you earn "; ABDGold&; "gold and "; ABDExe&; "Experience"
+Gold& = Gold& + ABDGold&
+Exe& = Exe& + ABDExe&
+ if Level& > 10 THEN Score& = Score& - 1
+ if Level& > 12 THEN Score& = Score& - 2
+ if Level& > 14 THEN Score& = Score& - 3
+ if Level& > 16 THEN Score& = Score& - 4
+ if Level& > 19 THEN Score& = Score& - 5
+ if Level& > 22 THEN Score& = Score& - 6
+ if Level& > 25 THEN Score& = Score& - 7
+ if Level& > 28 THEN Score& = Score& - 8
+ if Level& > 31 THEN Score& = Score& - 9
+ if Level& > 34 THEN Score& = Score& - 10
+ if Level& > 37 THEN Score& = Score& - 11
+ if Level& > 40 THEN Score& = Score& - 12
+ if Level& > 45 THEN Score& = Score& - 13
+ if Level& > 50 THEN Score& = Score& - 14
+ if Level& > 100 THEN Score& = Score& - 15
+Score& = Score& + 15
+INPUT "Press enter to continue"; Dummy$
+Suprise& = INT(RND * 3) + 1
+ if Suprise& = 2  goto Prize
+ goto Stats
+
+
+
+
+
+ABWill:
+X& = 14
+ if Health& <= 0  goto gameover
+ if WillHealth& <= 0  goto ABWWin
+PRINT "You have "; Health&; " left, The Will'o'Wisps has "; WillHealth&; " left"
+INPUT "do you wish to (1)Attack or (2)Run"; ABWFC&
+CLS
+ if ABWFC& = 1 THEN  goto ABWAtt
+ if ABWFC& = 2 THEN  goto Arena  else  goto ABWill
+ if ABWFC& = 0 THEN  goto Start2
+
+ABWAtt:
+RANDOMIZE TIMER
+WillDef& = int(RND * 175) + 31
+ if WillDef& - (Dex& + TRing&) <= 0  goto ABWHit
+ if WillDef& - (Dex& + TRing&) > 0  goto ABWMiss
+ABWHit:
+ goto Damage
+ABWHib:
+EDam& = (Str& - 3) + WeapDam&
+WillHealth& = WillHealth& - EDam&
+PRINT "You hit the Will'o'Wisp for "; EDam&; " Points of Damage!"
+ goto ABWRe
+ABWMiss:
+PRINT "You missed!"
+ goto ABWRe
+ABWRe:
+RANDOMIZE TIMER
+ ABWPo& = int(RND * 130) + 51
+ if ABWPo& >= Defe& THEN  goto ABWRHit  else  goto ABWRMiss
+ABWRHit:
+RANDOMIZE TIMER
+WillDame& = int(RND * 75) + 41
+PlayHp = PlayHp - WillDame&
+PRINT "You were hit for "; WillDame&; " Points of Damage!"
+Health& = Health& - WillDame&
+ goto ABWill
+ABWRMiss:
+PRINT "The Will'o'Wisp Misses you!"
+ goto ABWill:
+ABWWin:
+RANDOMIZE TIMER
+ABWGold& = int(RND * 300) + 51 - (Level& * 3)
+ABWExe& = int(RND * 1000) + 1001 - (Level& * 6)
+ if ABWGold& < 0 THEN ABWGold& = 0
+ if ABWExe& < 0 THEN ABWExe& = 0
+PRINT "You have defeated the Will'o'wisp, you earn "; ABWGold&; "gold and "; ABWExe&; "Experience"
+Gold& = Gold& + ABWGold&
+Exe& = Exe& + ABWExe&
+ if Level& > 10 THEN Score& = Score& - 1
+ if Level& > 12 THEN Score& = Score& - 2
+ if Level& > 14 THEN Score& = Score& - 3
+ if Level& > 16 THEN Score& = Score& - 4
+ if Level& > 19 THEN Score& = Score& - 5
+ if Level& > 22 THEN Score& = Score& - 6
+ if Level& > 25 THEN Score& = Score& - 7
+ if Level& > 28 THEN Score& = Score& - 8
+ if Level& > 31 THEN Score& = Score& - 9
+ if Level& > 34 THEN Score& = Score& - 10
+ if Level& > 37 THEN Score& = Score& - 11
+ if Level& > 40 THEN Score& = Score& - 12
+ if Level& > 45 THEN Score& = Score& - 13
+ if Level& > 50 THEN Score& = Score& - 14
+ if Level& > 100 THEN Score& = Score& - 15
+Score& = Score& + 15
+INPUT "Press enter to continue"; Dummy$
+Suprise& = int(RND * 3) + 1
+ if Suprise& = 2  goto Prize
+ goto Stats
+
+
+
+
+
+ABTi:
+X& = 15
+ if Health& <= 0  goto gameover
+ if TiHealth& <= 0  goto ASMWin
+PRINT "You have "; Health&; " left, The Ti'Nar has "; TiHealth&; " left"
+INPUT "do you wish to (1)Attack or (2)Run"; ABTFC&
+CLS
+ if ABTFC& = 1 THEN  goto ABTAtt
+ if ABTFC& = 2 THEN  goto Arena  else  goto ABTi
+ if ABTFC& = 0 THEN  goto Start2
+
+ABTAtt:
+RANDOMIZE TIMER
+TiDef& = INT(RND * 120) + 86
+ if TiDef& - (Dex& + TRing&) <= 0  goto ABTHit
+ if TiDef& - (Dex& + TRing&) > 0  goto ABTMiss
+ABTHit:
+ goto Damage
+ABTHib:
+EDam& = (Str& - 3) + WeapDam&
+TiHealth& = TiHealth& - EDam&
+PRINT "You hit the Ti'Nar for "; EDam&; " Points of Damage!"
+ goto ABTRe
+ABTMiss:
+PRINT "You missed!"
+ goto ABTRe
+ABTRe:
+RANDOMIZE TIMER
+ ABTPo& = int(RND * 100) + 101
+ if ABTPo& >= Defe& THEN  goto ABTRHit  else  goto ABTRMiss
+ABTRHit:
+RANDOMIZE TIMER
+TiDame& = INT(RND * 100) + 56
+PlayHp& = PlayHp& - TiDame&
+PRINT "You were hit for "; TiDame&; " Points of Damage!"
+Health& = Health& - TiDame&
+ goto ABTi
+ABTRMiss:
+PRINT "The Ti'Nar Missed!"
+ goto ABTi:
+ABTWin:
+RANDOMIZE TIMER
+ABTGold& = int(RND * 200) + 400 - (Level& * 3)
+ABTExe& = int(RND * 2500) + 2500 - (Level& * 6)
+ if ABTGold& < 0 THEN ABTGold& = 0
+ if ABTExe& < 0 THEN ABTExe& = 0
+PRINT "You have defeated the Ti'Nar, you earn "; ABTGold&; "gold and "; ABTExe&; "Experience"
+Gold& = Gold& + ABTGold&
+Exe& = Exe& + ABTExe&
+ if Level& > 10 THEN Score& = Score& - 1
+ if Level& > 12 THEN Score& = Score& - 2
+ if Level& > 14 THEN Score& = Score& - 3
+ if Level& > 16 THEN Score& = Score& - 4
+ if Level& > 19 THEN Score& = Score& - 5
+ if Level& > 22 THEN Score& = Score& - 6
+ if Level& > 25 THEN Score& = Score& - 7
+ if Level& > 28 THEN Score& = Score& - 8
+ if Level& > 31 THEN Score& = Score& - 9
+ if Level& > 34 THEN Score& = Score& - 10
+ if Level& > 37 THEN Score& = Score& - 11
+ if Level& > 40 THEN Score& = Score& - 12
+ if Level& > 45 THEN Score& = Score& - 13
+ if Level& > 50 THEN Score& = Score& - 14
+ if Level& > 55 THEN Score& = Score& - 15
+ if Level& > 60 THEN Score& = Score& - 16
+ if Level& > 75 THEN Score& = Score& - 17
+ if Level& > 80 THEN Score& = Score& - 18
+ if Level& > 95 THEN Score& = Score& - 19
+ if Level& > 100 THEN Score& = Score& - 20
+Score& = Score& + 20
+INPUT "Press enter to continue"; Dummy$
+Suprise& = int(RND * 2) + 1
+ if Suprise& = 1  goto Prize
+ goto Stats
+
+
+
+
+Armor:
+CLS
+PRINT "You see a tall, lean, strong man standing by a forge, smelting various metals"
+PRINT "to make various weapons and armors. He sees you and walks to the counter."
+INPUT "Press any Key"; Dummy$
+Armor2:
+CLS
+PRINT "You have "; Gold&; " Gold left."
+INPUT "Do you want (1)Weapons, (2)Armor, (3)Rings (4)Sell Misc Items or (5)Leave"; WeaArmC&
+ if WeaArmC& = 1 THEN  goto Weapons
+ if WeaArmC& = 2 THEN  goto Armors
+ if WeaArmC& = 3 THEN  goto Rings
+ if WeaArmC& = 4 THEN  goto sell
+ if WeaArmC& = 5 THEN  goto Start2  else  goto Armor2
+ if WeaArmC& = 0 THEN  goto Start2
+
+Weapons:
+
+INPUT "Do you wish to (1)buy or (2)sell"; BSWeap&
+ if BSWeap& = 2  goto WeapSell
+
+
+PRINT "You see..."
+PRINT "Weapon              Price   Effectiveness  Choice Number"
+PRINT "Dagger             25 Gold        2              1"
+PRINT "Spear              50 Gold        4              2"
+PRINT "Club               85 Gold        6              3"
+PRINT "Trident           150 Gold        8              4"
+PRINT "Short Sword       175 Gold        9              5"
+PRINT "Mace              225 Gold       11              6"
+PRINT "Sycal             300 Gold       13              7"
+PRINT "Long Sword        375 Gold       15              8"
+PRINT "Hawk Hatchet      425 Gold       17              9"
+PRINT "Whip              450 Gold       19             10"
+PRINT "Broad Sword       500 Gold       21             11"
+PRINT "Morning Star      550 Gold       23             12"
+PRINT "Bastard Sword     600 Gold       25             13"
+PRINT "Battle Axe        750 Gold       28             14"
+PRINT "Two-Handed Sword  800 Gold       35             15"
+PRINT "Glass Sword       900 Gold       42             16"
+PRINT "Gismare          1000 Gold       47             17"
+PRINT "Magic Katana     1250 Gold       52             18"
+PRINT "Flame Sword      1500 Gold       60             19"
+PRINT "X-Calaber        1800 Gold       75             20"
+PRINT "Meteoric Axe     2000 Gold      100             21"
+
+INPUT "Which do you want?"; WeapWant&
+       if WeapWant& = 1 THEN PRINT "Do you wish to buy a Dagger?"
+       if WeapWant& = 2 THEN PRINT "Do you need a Spear?"
+       if WeapWant& = 3 THEN PRINT "Do you want to buy a Club?"
+       if WeapWant& = 4 THEN PRINT "Do you wish to buy a Trident?"
+       if WeapWant& = 5 THEN PRINT "Do you want a Short Sword?"
+       if WeapWant& = 6 THEN PRINT "Do you want the Mace?"
+       if WeapWant& = 7 THEN PRINT "Would you like the Sycal?"
+       if WeapWant& = 8 THEN PRINT "Do you need a Long Sword?"
+       if WeapWant& = 9 THEN PRINT "Do you need a Hawk Hatchet?"
+       if WeapWant& = 10 THEN PRINT "Do you want a Whip?"
+       if WeapWant& = 11 THEN PRINT "Do you need a Broad Sword?"
+       if WeapWant& = 12 THEN PRINT "Do you want a Morning Star?"
+       if WeapWant& = 13 THEN PRINT "Do you wish to buy a bastard Sword?"
+       if WeapWant& = 14 THEN PRINT "Do you realy need a Battle Axe?"
+       if WeapWant& = 15 THEN PRINT "Do you need a Two-Handed Sword?"
+       if WeapWant& = 16 THEN PRINT "Do you wish to purchase a Glass Sword?"
+       if WeapWant& = 17 THEN PRINT "Do you need a Gismare?"
+       if WeapWant& = 18 THEN PRINT "Do you need a Magic Katana?"
+       if WeapWant& = 19 THEN PRINT "Do you want a Flame Sword"
+       if WeapWant& = 20 THEN PRINT "Do you need a X-Calaber?"
+       if WeapWant& = 21 THEN PRINT "Do you have to have the Meteoric Axe?"
+      if WeapWant& = 1 THEN WPrice& = 25
+      if WeapWant& = 2 THEN WPrice& = 50
+      if WeapWant& = 3 THEN WPrice& = 85
+      if WeapWant& = 4 THEN WPrice& = 150
+      if WeapWant& = 5 THEN WPrice& = 175
+      if WeapWant& = 6 THEN WPrice& = 225
+      if WeapWant& = 7 THEN WPrice& = 300
+      if WeapWant& = 8 THEN WPrice& = 375
+      if WeapWant& = 9 THEN WPrice& = 425
+      if WeapWant& = 10 THEN WPrice& = 450
+      if WeapWant& = 11 THEN WPrice& = 500
+      if WeapWant& = 12 THEN WPrice& = 550
+      if WeapWant& = 13 THEN WPrice& = 600
+      if WeapWant& = 14 THEN WPrice& = 850
+      if WeapWant& = 15 THEN WPrice& = 800
+      if WeapWant& = 16 THEN WPrice& = 900
+      if WeapWant& = 17 THEN WPrice& = 1000
+      if WeapWant& = 18 THEN WPrice& = 1250
+      if WeapWant& = 19 THEN WPrice& = 1500
+      if WeapWant& = 20 THEN WPrice& = 1800
+      if WeapWant& = 21 THEN WPrice& = 2000
+    if Gold& - WPrice& < 0 THEN PRINT "You do not have enough Gold."
+    if Gold& - WPrice& < 0 THEN  goto Armor2
+INPUT "Well do you? (1)Yes (2)No"; WantWeap&
+ if WantWeap& = 2 THEN  goto Armor2
+          
+           if WeapWant& = 1 THEN WepHave$ = "Dagger"
+           if WeapWant& = 2 THEN WepHave$ = "Spear"
+           if WeapWant& = 3 THEN WepHave$ = "Club"
+           if WeapWant& = 4 THEN WepHave$ = "Trident"
+           if WeapWant& = 5 THEN WepHave$ = "Short Sword"
+           if WeapWant& = 6 THEN WepHave$ = "Mace"
+           if WeapWant& = 7 THEN WepHave$ = "Sycal"
+           if WeapWant& = 8 THEN WepHave$ = "Long Sword"
+           if WeapWant& = 9 THEN WepHave$ = "Hawk Hatchet"
+           if WeapWant& = 10 THEN WepHave$ = "Whip"
+           if WeapWant& = 11 THEN WepHave$ = "Broad Sword"
+           if WeapWant& = 12 THEN WepHave$ = "Morning Star"
+           if WeapWant& = 13 THEN WepHave$ = "Bastard Sword"
+           if WeapWant& = 14 THEN WepHave$ = "battle Axe"
+           if WeapWant& = 15 THEN WepHave$ = "Two-Handed Sword"
+           if WeapWant& = 16 THEN WepHave$ = "Glass Sword"
+           if WeapWant& = 17 THEN WepHave$ = "Gismare"
+           if WeapWant& = 18 THEN WepHave$ = "Magic Katana"
+           if WeapWant& = 19 THEN WepHave$ = "Flame Sword"
+           if WeapWant& = 20 THEN WepHave$ = "X-Calaber"
+           if WeapWant& = 21 THEN WepHave$ = "Meteoric Axe"
+         if WeapWant& = 1 THEN WeapStr& = 2
+         if WeapWant& = 2 THEN WeapStr& = 4
+         if WeapWant& = 3 THEN WeapStr& = 6
+         if WeapWant& = 4 THEN WeapStr& = 8
+         if WeapWant& = 5 THEN WeapStr& = 9
+         if WeapWant& = 6 THEN WeapStr& = 11
+         if WeapWant& = 7 THEN WeapStr& = 13
+         if WeapWant& = 8 THEN WeapStr& = 15
+         if WeapWant& = 9 THEN WeapStr& = 17
+         if WeapWant& = 10 THEN WeapStr& = 19
+         if WeapWant& = 11 THEN WeapStr& = 21
+         if WeapWant& = 12 THEN WeapStr& = 23
+         if WeapWant& = 13 THEN WeapStr& = 25
+         if WeapWant& = 14 THEN WeapStr& = 28
+         if WeapWant& = 15 THEN WeapStr& = 35
+         if WeapWant& = 16 THEN WeapStr& = 42
+         if WeapWant& = 17 THEN WeapStr& = 47
+         if WeapWant& = 18 THEN WeapStr& = 52
+         if WeapWant& = 19 THEN WeapStr& = 60
+         if WeapWant& = 20 THEN WeapStr& = 75
+         if WeapWant& = 21 THEN WeapStr& = 100
+   Gold& = Gold& - WPrice&
+ goto Armor2
+
+
+WeapSell:
+         if WeapStr& = 0 THEN  goto Armor2
+         if WeapStr& = 2 THEN OWPrice& = INT(25 / 2)
+         if WeapStr& = 4 THEN OWPrice& = INT(50 / 2)
+         if WeapStr& = 6 THEN OWPrice& = INT(85 / 2)
+         if WeapStr& = 8 THEN OWPrice& = INT(150 / 2)
+         if WeapStr& = 9 THEN OWPrice& = INT(175 / 2)
+         if WeapStr& = 11 THEN OWPrice& = INT(225 / 2)
+         if WeapStr& = 13 THEN OWPrice& = INT(300 / 2)
+         if WeapStr& = 15 THEN OWPrice& = INT(375 / 2)
+         if WeapStr& = 17 THEN OWPrice& = INT(425 / 2)
+         if WeapStr& = 19 THEN OWPrice& = INT(450 / 2)
+         if WeapStr& = 21 THEN OWPrice& = INT(500 / 2)
+         if WeapStr& = 23 THEN OWPrice& = INT(550 / 2)
+         if WeapStr& = 25 THEN OWPrice& = INT(600 / 2)
+         if WeapStr& = 28 THEN OWPrice& = INT(750 / 2)
+         if WeapStr& = 35 THEN OWPrice& = INT(800 / 2)
+         if WeapStr& = 42 THEN OWPrice& = INT(900 / 2)
+         if WeapStr& = 47 THEN OWPrice& = INT(1000 / 2)
+         if WeapStr& = 52 THEN OWPrice& = INT(1250 / 2)
+         if WeapStr& = 60 THEN OWPrice& = INT(1500 / 2)
+         if WeapStr& = 75 THEN OWPrice& = INT(1800 / 2)
+         if WaepStr& = 100 THEN OWPrice& = INT(2000 / 2)
+ PRINT "You will recieve "; OWPrice&; " gold for your "; WepHave$
+ INPUT "Do you accept (1)Yes (2)No"; WeapSell&
+  if WeapSell& = 2 THEN  goto Armor2
+ WeapStr& = 0
+ WepHave$ = "Fists (Your Own)"
+ Gold& = Gold& + OWPrice&
+  goto Armor2
+Armors:
+INPUT "Do you wish to buy or sell (1)Buy (2)Sell"; ArmSell
+ if ArmSell = 2  goto ArmSell
+
+PRINT "You see..."
+PRINT "Armor              Price   Effectiveness  Choice Number"
+PRINT "Robes             25 Gold        3               1"
+PRINT "Leather           35 Gold        4               2"
+PRINT "Shell Plate       55 Gold        6               3"
+PRINT "Hardened leather 125 Gold       12               4"
+PRINT "Studded Leather  175 Gold       15               5"
+PRINT "Splint Mail      250 Gold       19               6"
+PRINT "Ring Mail        375 Gold       25               7"
+PRINT "Scale Mail       500 Gold       30               8"
+PRINT "Chain Mail       650 Gold       35               9"
+PRINT "Plate Mail       750 Gold       40               10"
+PRINT "Field Plate      850 Gold       55               11"
+PRINT "Erik's Armor    1000 Gold       75               12"
+PRINT "Meteoric Plate  1350 Gold      100               13"
+
+INPUT "which do you want?"; ArmWant&
+       if ArmWant& = 1 THEN PRINT "Do you wish to buy the Robe?"
+       if ArmWant& = 2 THEN PRINT "Do you need Leather?"
+       if ArmWant& = 3 THEN PRINT "Do you want the Shell Plate?"
+       if ArmWant& = 4 THEN PRINT "Would you like the Hardened Leather?"
+       if ArmWant& = 5 THEN PRINT "Do you wish to buy the Studded Leather?"
+       if ArmWant& = 6 THEN PRINT "Do you wish to buy the Splint Mail?"
+       if ArmWant& = 7 THEN PRINT "Do you wish to buy the Ring Mail?"
+       if ArmWant& = 8 THEN PRINT "Do you wish to buy the Scale Mail?"
+       if ArmWant& = 9 THEN PRINT "Do you wish to buy the Chain Mail?"
+       if ArmWant& = 10 THEN PRINT "Do you wish to buy the Plate Mail?"
+       if ArmWant& = 11 THEN PRINT "Do you wish to buy the Field Plate?"
+       if ArmWant& = 12 THEN PRINT "Do you wish to buy Erik's Armor?"
+       if ArmWant& = 13 THEN PRINT "Do you wish to buy the Meteoric Plate?"
+      if ArmWant& = 1 THEN APrice& = 20
+      if ArmWant& = 2 THEN APrice& = 30
+      if ArmWant& = 3 THEN APrice& = 55
+      if ArmWant& = 4 THEN APrice& = 125
+      if ArmWant& = 5 THEN APrice& = 175
+      if ArmWant& = 6 THEN APrice& = 250
+      if ArmWant& = 7 THEN APrice& = 375
+      if ArmWant& = 8 THEN APrice& = 500
+      if ArmWant& = 9 THEN APrice& = 650
+      if ArmWant& = 10 THEN APrice& = 750
+      if ArmWant& = 11 THEN APrice& = 850
+      if ArmWant& = 12 THEN APrice& = 1000
+      if ArmWant& = 13 THEN APrice& = 1350
+    if Gold& - APrice& < 0 THEN PRINT "You do not have enough Gold."
+    if Gold& - APrice& < 0 THEN  goto Armor2
+INPUT "Well do you? (1)Yes (2)No"; WantArm&
+ if WantArm& = 1 THEN  goto Arm
+ if WantArm& = 2 THEN  goto Armor2
+Arm:
+           if ArmHave$ <> "Skin (Your own)" THEN PRINT "Sell your old armor"
+           if ArmHave$ <> "Skin (Your own)" THEN SLEEP 1
+           if ArmHave$ <> "Skin (Your own)" THEN  goto Armor2
+           if ArmWant& = 1 THEN ArmHave$ = "Robes"
+           if ArmWant& = 2 THEN ArmHave$ = "Leather"
+           if ArmWant& = 3 THEN ArmHave$ = "Shell Plate"
+           if ArmWant& = 4 THEN ArmHave$ = "Hardened Leather"
+           if ArmWant& = 5 THEN ArmHave$ = "Studded Leather"
+           if ArmWant& = 6 THEN ArmHave$ = "Splint Mail"
+           if ArmWant& = 7 THEN ArmHave$ = "Ring Mail"
+           if ArmWant& = 8 THEN ArmHave$ = "Scale Mail"
+           if ArmWant& = 9 THEN ArmHave$ = "Chain Mail"
+           if ArmWant& = 10 THEN ArmHave$ = "Plate Mail"
+           if ArmWant& = 11 THEN ArmHave$ = "Field Plate"
+           if ArmWant& = 12 THEN ArmHave$ = "Erik's Armor"
+           if ArmWant& = 13 THEN ArmHave$ = "Meteoric Plate"
+         if ArmWant& = 1 THEN ArmStr& = 3
+         if ArmWant& = 2 THEN ArmStr& = 4
+         if ArmWant& = 3 THEN ArmStr& = 6
+         if ArmWant& = 4 THEN ArmStr& = 12
+         if ArmWant& = 5 THEN ArmStr& = 15
+         if ArmWant& = 6 THEN ArmStr& = 19
+         if ArmWant& = 7 THEN ArmStr& = 25
+         if ArmWant& = 8 THEN ArmStr& = 30
+         if ArmWant& = 9 THEN ArmStr& = 35
+         if ArmWant& = 10 THEN ArmStr& = 40
+         if ArmWant& = 11 THEN ArmStr& = 55
+         if ArmWant& = 12 THEN ArmStr& = 75
+         if ArmWant& = 13 THEN ArmStr& = 100
+   Gold& = Gold& - APrice&
+ goto Armor2
+
+
+
+ArmSell:
+CLS
+           if ArmHave$ = "Skin (Your Own)" THEN PRINT "You have no armor"
+           if ArmHave$ = "Skin (Your Own)" THEN SLEEP 1
+           if ArmHave$ = "Skin (Your Own)"  goto Armor2
+           if ArmHave$ = "Robes" THEN OAPrice& = INT(20 / 2)
+           if ArmHave$ = "Leather" THEN OAPrice = INT(30 / 2)
+           if ArmHave$ = "Shell Plate" THEN OAPrice& = INT(55 / 2)
+           if ArmHave$ = "Hardened Leather" THEN OAPrice& = INT(125 / 2)
+           if ArmHave$ = "Studed Leather" THEN OAPrice& = INT(175 / 2)
+           if ArmHave$ = "Splint Mail" THEN OAPrice& = INT(250 / 2)
+           if ArmHave$ = "Ring Mail" THEN OAPrice& = INT(325 / 2)
+           if ArmHave$ = "Scale Mail" THEN OAPrice& = INT(400 / 2)
+           if ArmHave$ = "Chain Mail" THEN OAPrice& = INT(600 / 2)
+           if ArmHave$ = "Plate Mail" THEN OAPrice& = INT(750 / 2)
+           if ArmHave$ = "Field Plate" THEN OAPrice& = INT(860 / 2)
+           if ArmHave$ = "Erik's Armor" THEN OAPrice& = INT(1000 / 2)
+           if ArmHave$ = "Meteoric Plate" THEN OAPrice& = INT(1350 / 2)
+PRINT "Will you sell your "; ArmHave$; " for "; OAPrice&
+INPUT "(1)Yes (2)No "; WArmSell&
+         if WArmSell& = 2  goto Armor2
+ArmHave$ = "Skin (Your own)"
+ArmStr& = 0
+Gold& = Gold& + OAPrice&
+ goto Armor2
+
+
+Rings:
+PRINT "You see..."
+PRINT "Ring               Price   Effectiveness  Choice Number"
+PRINT "Copper            55 Gold        2              1"
+PRINT "Tin              155 Gold        5              2"
+PRINT "Bronze           285 Gold        7              3"
+PRINT "Silver           400 Gold       11              4"
+PRINT "Gold             650 Gold       18              5"
+PRINT "Platinum         875 Gold       21              6"
+PRINT "Meteoric         1230 Gold      29              7"
+     INPUT "Which hand do you wish to put this ring on (1)Left (2)Right"; HandRing&
+      if HandRing& = 1 THEN  goto LRing
+      if HandRing& = 2 THEN  goto RRing
+
+
+LRing:
+INPUT "Which do you want?"; LRingWant&
+       if LRingWant& = 1 THEN PRINT "Do you wish to buy a Copper Ring?"
+       if LRingWant& = 2 THEN PRINT "Do you wish to buy a Tin Ring?"
+       if LRingWant& = 3 THEN PRINT "Do you wish to buy a Bronze Ring?"
+       if LRingWant& = 4 THEN PRINT "Do you wish to buy a Silver Ring?"
+       if LRingWant& = 5 THEN PRINT "Do you wish to buy a Gold Ring?"
+       if LRingWant& = 6 THEN PRINT "Do you wish to buy a Platinum Ring?"
+       if LRingWant& = 7 THEN PRINT "Do you wish to buy a Meteoric Ring?"
+      if LRingWant& = 1 THEN LRPrice& = 55
+      if LRingWant& = 2 THEN LRPrice& = 155
+      if LRingWant& = 3 THEN LRPrice& = 285
+      if LRingWant& = 4 THEN LRPrice& = 400
+      if LRingWant& = 5 THEN LRPrice& = 650
+      if LRingWant& = 6 THEN LRPrice& = 875
+      if LRingWant& = 7 THEN LRPrice& = 1230
+    if Gold& - LRPrice& < 0 THEN PRINT "You do not have enough Gold."
+    if Gold& - LRPrice& < 0 THEN  goto Armor2
+INPUT "Well do you? (1)Yes (2)No"; WantLRing&
+ if WantLRing& = 2 THEN  goto Armor2
+         if LRingWant& = 1 THEN LHave$ = "Copper"
+         if LRingWant& = 2 THEN LHave$ = "Tin"
+         if LRingWant& = 3 THEN LHave$ = "Bronze"
+         if LRingWant& = 4 THEN LHave$ = "Silver"
+         if LRingWant& = 5 THEN LHave$ = "Gold"
+         if LRingWant& = 6 THEN LHave$ = "Platinum"
+         if LRingWant& = 7 THEN LHave$ = "Meteoric"
+         if LRingWant& = 1 THEN LRing& = 2
+         if LRingWant& = 2 THEN LRing& = 5
+         if LRingWant& = 3 THEN LRing& = 7
+         if LRingWant& = 4 THEN LRing& = 11
+         if LRingWant& = 5 THEN LRing& = 18
+         if LRingWant& = 6 THEN LRing& = 21
+         if LRingWant& = 7 THEN LRing& = 29
+   Gold& = Gold& - LRPrice&
+ goto Armor2
+
+
+
+RRing:
+INPUT "which do you want?"; RRingWant&
+       if RRingWant& = 1 THEN PRINT "Do you wish to buy a Copper Ring?"
+       if RRingWant& = 2 THEN PRINT "Do you wish to buy a Tin Ring?"
+       if RRingWant& = 3 THEN PRINT "Do you wish to buy a Bronze Ring?"
+       if RRingWant& = 4 THEN PRINT "Do you wish to buy a Silver Ring?"
+       if RRingWant& = 5 THEN PRINT "Do you wish to buy a Gold Ring?"
+       if RRingWant& = 6 THEN PRINT "Do you wish to buy a Platinum Ring?"
+       if RRingWant& = 7 THEN PRINT "Do you wish to buy a Meteoric Ring?"
+      if RRingWant& = 1 THEN RRPrice& = 55
+      if RRingWant& = 2 THEN RRPrice& = 155
+      if RRingWant& = 3 THEN RRPrice& = 285
+      if RRingWant& = 4 THEN RRPrice& = 400
+      if RRingWant& = 5 THEN RRPrice& = 650
+      if RRingWant& = 6 THEN RRPrice& = 875
+      if RRingWant& = 7 THEN RRPrice& = 1230
+    if Gold& - RRPrice& < 0 THEN PRINT "You do not have enough Gold."
+    if Gold& - RRPrice& < 0 THEN  goto Armor2
+INPUT "Well do you? (1)Yes (2)No"; WantRRing&
+ if WantRRing& = 2 THEN  goto Armor2
+         if RRingWant& = 1 THEN RHave$ = "Copper"
+         if RRingWant& = 2 THEN RHave$ = "Tin"
+         if RRingWant& = 3 THEN RHave$ = "Bronze"
+         if RRingWant& = 4 THEN RHave$ = "Silver"
+         if RRingWant& = 5 THEN RHave$ = "Gold"
+         if RRingWant& = 6 THEN RHave$ = "Platinum"
+         if RRingWant& = 7 THEN RHave$ = "Meteoric"
+         if RRingWant& = 1 THEN RRing& = 2
+         if RRingWant& = 2 THEN RRing& = 5
+         if RRingWant& = 3 THEN RRing& = 7
+         if RRingWant& = 4 THEN RRing& = 11
+         if RRingWant& = 5 THEN RRing& = 18
+         if RRingWant& = 6 THEN RRing& = 21
+         if RRingWant& = 7 THEN RRing& = 29
+   Gold& = Gold& - RRPrice&
+ goto Armor2
+
+
+
+
+sell:
+ if SpareItem$ = "Nodda" THEN SIPrice& = 0
+ if SpareItem$ = "Rare Item" THEN SIPrice& = 33
+ if SpareItem$ = "Gold Nugget" THEN SIPrice& = 24
+ if SpareItem$ = "Bag of Silver" THEN SIPrice& = 17
+ if SpareItem$ = "Platinum Cup" THEN SIPrice& = 37
+ if SpareItem$ = "Oak Box" THEN SIPrice& = 12
+ if SpareItem$ = "Rare 'Herbs'" THEN SIPrice& = 7
+ if SpareItem$ = "???" THEN SIPrice& = 15
+ if SpareItem$ = "Broken Item" THEN SIPrice& = 5
+ if SpareItem$ = "Tapistry" THEN SIPrice& = 31
+
+ if SpareItem2$ = "Rare Item" THEN SIPrice2& = 33
+ if SpareItem2$ = "Gold Nugget" THEN SIPrice2& = 24
+ if SpareItem2$ = "Bag of Silver" THEN SIPrice2& = 17
+ if SpareItem2$ = "Platinum Cup" THEN SIPrice2& = 37
+ if SpareItem2$ = "Oak Box" THEN SIPrice2& = 12
+ if SpareItem2$ = "Rare 'Herbs'" THEN SIPrice2& = 7
+ if SpareItem2$ = "???" THEN SIPrice2& = 15
+ if SpareItem2$ = "Broken Item" THEN SIPrice2& = 5
+ if SpareItem2$ = "Tapistry" THEN SIPrice2& = 31
+
+ if SpareItem3$ = "Rare Item" THEN SIPrice3& = 33
+ if SpareItem3$ = "Gold Nugget" THEN SIPrice3& = 24
+ if SpareItem3$ = "Bag of Silver" THEN SIPrice3& = 17
+ if SpareItem3$ = "Platinum Cup" THEN SIPrice3& = 37
+ if SpareItem3$ = "Oak Box" THEN SIPrice3& = 12
+ if SpareItem3$ = "Rare 'Herbs'" THEN SIPrice3& = 7
+ if SpareItem3$ = "???" THEN SIPrice3& = 15
+ if SpareItem3$ = "Broken Item" THEN SIPrice3& = 5
+ if SpareItem3$ = "Tapistry" THEN SIPrice3& = 31
+
+Cho:
+PRINT "Do you wish to sell your "; SpareItem$; " for"; SIPrice&; " gold?"
+PRINT "Do you wish to sell your "; SpareItem2$; " for"; SIPrice2&; " gold?"
+PRINT "Do you wish to sell your "; SpareItem3$; " for"; SIPrice3&; " gold?"
+PRINT "Do you wish to sell your . . . err, um, I mean, do you wish to leave?"
+PRINT "(1)"; SpareItem$; " (2)"; SpareItem2$; " (3)"; SpareItem3$; " or (4)Exit?"
+INPUT sell&
+ if sell& = 1 THEN  goto SellSI
+ if sell& = 2 THEN  goto SellSI2
+ if sell& = 3 THEN  goto SellSI3
+ if sell& = 4 THEN  goto Armor2  else  goto Cho
+SellSI:
+Gold& = Gold& + SIPrice&
+SpareItem$ = "nodda"
+ goto Armor2
+
+SellSI2:
+ if SpareItem2$ = "nothingness" THEN PRINT "Yha, right."
+ if SpareItem2$ = "nothingness" THEN SLEEP 1
+ if SpareItem2$ = "nothingness"  goto Armor2
+Gold& = Gold& + SIPrice2&
+SpareItem2$ = "nothingness"
+SIPrice2& = 0
+ goto Armor2
+
+SellSI3:
+ if SpareItem3$ = "nothin'" THEN PRINT "Yha, right."
+ if SpareItem3$ = "nothin'" THEN SLEEP 1
+ if SpareItem3$ = "nothin'"  goto Armor2
+Gold& = Gold& + SIPrice3&
+SpareItem3$ = "nothin'"
+SIPrice3& = 0
+ goto Armor2
+
+
+
+
+
+Train:
+ if ExpGoal& - Exe& <= 0 THEN  goto LevelUp
+ if ExpGoal& - Exe& > 0 THEN  goto NoLevelUp
+LevelUp:
+ if Gold& - Level& * 50 < 0 THEN  goto NoLevelUpG
+ if Gold& - Level& * 50 >= 0 THEN  goto StatUp
+StatUp:
+RANDOMIZE TIMER
+Gold& = Gold& - Level& * 50
+ SUp& = INT(RND * 3) + 1
+ DUp& = INT(RND * 3) + 1
+ CUp& = INT(RND * 3) + 1
+ HUp& = INT(RND * 15) + 6
+ Level& = Level& + 1
+ OS& = Str&
+ Str& = Str& + SUp&
+ OD& = Dex&
+ Dex& = Dex& + DUp&
+ OC& = Con&
+ Con& = Con& + CUp&
+ OTH& = THealth&
+ THealth& = THealth& + HUp& + CUp&
+ Health& = THealth&
+  goto LevStats
+NoLevelUp:
+PRINT "Come back when you have more experience."
+INPUT "Press any key."; Duh&
+ goto Stats
+NoLevelUpG:
+PRINT "Come back when you have "; Level& * 50; " gold."
+INPUT "Press any key."; Duh&
+ goto Stats
+
+Stats:
+TRing& = RRing& + LRing&
+ if Level& = 1 THEN ExpGoal& = 500
+ if Level& = 2 THEN ExpGoal& = 1000
+ if Level& = 3 THEN ExpGoal& = 2500
+ if Level& = 4 THEN ExpGoal& = 4000
+ if Level& = 5 THEN ExpGoal& = 7500
+ if Level& = 6 THEN ExpGoal& = 10000
+ if Level& = 7 THEN ExpGoal& = 15000
+ if Level& = 8 THEN ExpGoal& = 20000
+ if Level& = 9 THEN ExpGoal& = 25000
+ if Level& = 10 THEN ExpGoal& = 33000
+ if Level& = 11 THEN ExpGoal& = 38000
+ if Level& = 12 THEN ExpGoal& = 43000
+ if Level& = 13 THEN ExpGoal& = 50000
+ if Level& = 14 THEN ExpGoal& = 60000
+ if Level& = 15 THEN ExpGoal& = 70000
+ if Level& = 16 THEN ExpGoal& = 80000
+ if Level& = 17 THEN ExpGoal& = 90000
+ if Level& = 18 THEN ExpGoal& = 100000
+ if Level& = 19 THEN ExpGoal& = 110000
+ if Level& = 20 THEN ExpGoal& = 120000
+
+CLS
+LOCATE 17, 1
+PRINT "¿ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒŸ"
+LOCATE 1, 1
+PRINT "⁄ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒø"
+PRINT "?"; Name$
+PRINT "?                                                                             ?
+PRINT "?                                                                             ?
+PRINT "?Experience Points        "; Exe&
+PRINT "?Next level up            "; ExpGoal& - Exe&
+PRINT "?Your Strength is          "; Str&
+PRINT "?Your Dexterity is        "; Dex&
+PRINT "?Your Health is at        "; Health&
+PRINT "?Your Maximum Health is   "; THealth&
+PRINT "?Gold                     "; Gold&
+PRINT "?You are of Level         "; Level&
+PRINT "?Score                    "; Score&
+LOCATE 2, 80
+PRINT "?
+LOCATE 3, 80
+PRINT "?
+LOCATE 4, 80
+PRINT "?
+LOCATE 5, 80
+PRINT "?
+LOCATE 6, 80
+PRINT "?
+LOCATE 7, 80
+PRINT "?
+LOCATE 8, 80
+PRINT "?
+LOCATE 9, 80
+PRINT "?
+LOCATE 10, 80
+PRINT "?
+LOCATE 11, 80
+PRINT "?
+LOCATE 12, 80
+PRINT "?
+LOCATE 13, 80
+PRINT "?
+LOCATE 14, 80
+PRINT "?
+LOCATE 15, 80
+PRINT "?
+LOCATE 16, 80
+PRINT "?
+LOCATE 15, 1
+PRINT "?
+LOCATE 16, 1
+PRINT "?
+LOCATE 14, 1
+PRINT "?
+
+LOCATE 14, 3
+PRINT "Right hand ring        "; RHave$
+LOCATE 15, 3
+PRINT "Did "; Name$; " cheat? "; DidCheat$
+LOCATE 15, 40
+PRINT "Left hand ring         "; LHave$
+LOCATE 13, 40
+PRINT "Weapon                 "; WepHave$
+LOCATE 14, 40
+PRINT "Armor                  "; ArmHave$
+LOCATE 11, 40
+PRINT "Constitution           "; Con&
+LOCATE 12, 40
+PRINT "Left hand ring power   "; LRing&
+LOCATE 5, 40
+PRINT "Right hand ring power  "; RRing&
+LOCATE 6, 40
+PRINT "Weapon power is        "; WeapStr&
+LOCATE 7, 40
+PRINT "Armor class is         "; ArmStr&
+LOCATE 8, 40
+PRINT "Attack power           "; Str& + WeapStr& - 3
+LOCATE 9, 40
+PRINT "Defense rate           "; Dex& + ArmStr&
+LOCATE 10, 40
+PRINT "Hit success rate        "; Dex& + TRing&
+LOCATE 20, 5
+
+INPUT "Press any key to continue."; Duh$
+ goto Start2
+
+Inn:
+CLS
+PRINT "You have"; Health&; "Health and"; Gold&; "Gold left. Do you wish to sleep until healed?"
+INPUT "(1)Yes (2)No Do you wish to rest and regain health"; InnRest&
+ if InnRest& = 1 THEN  goto SleepyLoop
+ if InnRest& = 2 THEN  goto Start2  else  goto Inn
+SleepyLoop:
+INPUT "How Many Days?"; Days&
+ if Gold& - (Days& * 5) <= 0 THEN  goto NoGInn
+Health& = Health& + (Days& * 10)
+Gold& = Gold& - (Days& * 5)
+ goto HealthCheck
+NoGInn:
+PRINT "You do not have enough gold."
+INPUT "Press any key"; Duh&
+ goto Inn
+
+
+gameover:
+PRINT Name$; " has died"
+PRINT "                                      "
+PRINT "          €€€€?                      "
+PRINT "       €€€€€€€€€€?                    "
+PRINT "     €€€€€€€€€€€€€€?                 "
+PRINT "    €€€€€€€€€€€€€€€€?             "
+PRINT "   €€€€€€€€€€€€€€€€€€?               "
+PRINT "   €€€€€€?ere€€€€€€€€                "
+PRINT "   €€€€€€€€€€€€€€€€€€?            "
+PRINT "   €€€€€€?ies€€€€€€€€               "
+PRINT "   €€€€€€€€€€€€€€€€€€?               "
+PRINT "   €€€€  A fool  €€€€?             "
+PRINT "   €€€€ Killed By€€€€?               "
+PRINT "   €€€€ Weaklings€€€€?               "
+PRINT "   €€€€€€€€€€€€€€€€€€?              "
+PRINT "   €€€€€€€€€€€€€€€€€€?          "
+PRINT "                                     "
+INPUT Duh$
+ goto start99
+
+
+GameOver1:
+END
+LevStats:
+PRINT "Your Strength was         "; OS&
+PRINT "Your Strength is now      "; Str&
+PRINT "Your Dexterity was        "; OD&
+PRINT "Your Dexterity is now     "; Dex&
+PRINT "Your Constitution was     "; OC&
+PRINT "Your Constitution is now  "; Con&
+SLEEP 2
+PRINT "Your Maximum Health was   "; OTH&
+PRINT "Your Maximum Health is now"; THealth&
+PRINT "You are of Level          "; Level&
+SLEEP 1
+INPUT "Press any key to continue."; Duh$
+ goto Stats
+HealthCheck:
+ if Health& > THealth& THEN Health& = Health& - 1
+ if Health& > THealth& THEN  goto HealthCheck  else  goto Inn
+
+StatCheat:
+DidCheat$ = "Yes"
+INPUT "Name"; Name$
+CLS
+PRINT "You found the cheat code..."
+PRINT "They cannot be below 6 or above 40 and cannot equal above 100."
+INPUT "Strength"; Str&
+ if Str& = 99 THEN  goto GameOver1
+ if Str& > 40 THEN PRINT "Too strong"
+ if Str& > 40 THEN  goto StatCheat
+ if Str& < 6 THEN PRINT "Too weak"
+ if Str& < 6 THEN  goto StatCheat
+INPUT "Dexterity"; Dex&
+ if Dex& > 40 THEN PRINT "Too fast"
+ if Dex& > 40 THEN  goto StatCheat
+ if Dex& < 6 THEN PRINT "Too slow"
+ if Dex& < 6 THEN  goto StatCheat
+INPUT "Constitution"; Con&
+ if Con& > 40 THEN PRINT "Too stout"
+ if Con& > 40 THEN  goto StatCheat
+ if Con& < 6 THEN PRINT "Too sickly"
+ if Con& < 6 THEN  goto StatCheat
+INPUT "Gold * 10"; GoldS&
+ if GoldS& > 40 THEN PRINT "Too rich"
+ if GoldS& > 40 THEN  goto StatCheat
+ if GoldS& < 6 THEN PRINT "Too poor"
+ if GoldS& < 6 THEN  goto StatCheat
+THealth& = Con& * 4
+Health& = THealth&
+Gold& = GoldS& * 100
+Total& = Str& + Dex& + Con& + GoldS&
+ if Total& > 100 THEN PRINT "The total must be 100 or lower"
+ if Total& > 100 THEN  goto StatCheat
+ if Total& < 100 THEN PRINT "You did not use all the points."
+PRINT "Do you wish to reinput them?"
+INPUT "(1) yes (2) no"; tlat&
+ if tlat& = 1 THEN  goto StatCheat
+ if tlat& = 2 THEN  goto Start2  else  goto StatCheat
+
+Tavern:
+PRINT "You go to the tavern and see the usual, men drunk and passed out,  people "
+PRINT "talkin' and of course the bartender serving out the drinks."
+PRINT "You can go and talk to people, play some dice, order a drink, or leave."
+INPUT ""; TWhat$
+ if TWhat$ = "Leave" THEN  goto Start2
+ if TWhat$ = "leave" THEN  goto Start2
+ if TWhat$ = "LEAVE" THEN  goto Start2
+ if TWhat$ = "Dice" THEN  goto dice
+ if TWhat$ = "dice" THEN  goto dice
+ if TWhat$ = "DICE" THEN  goto dice
+ if TWhat$ = "Gamble" THEN  goto dice
+ if TWhat$ = "gamble" THEN  goto dice
+ if TWhat$ = "GAMBLE" THEN  goto dice
+ if TWhat$ = "Talk" THEN  goto Group
+ if TWhat$ = "talk" THEN  goto Group
+ if TWhat$ = "TALK" THEN  goto Group
+Group:
+PRINT "'What do you want?' asks one of the men as you approach the group."
+TLost:
+INPUT "'Are you lost?' another man says,"; TLost$
+ if TLost$ = "No"  goto TOk
+ if TLost$ = "no"  goto TOk
+ if TLost$ = "NO"  goto TOk
+ if TLost$ = "Yes" THEN  goto TNOk
+ if TLost$ = "yes" THEN  goto TNOk
+ if TLost$ = "YES" THEN  goto TNOk
+TNOk:
+PRINT "'Well, the bar is to yer left and the door is behind you,' one man tells you."
+ goto Tavern
+TOk:
+PRINT "'Well Leave."
+ goto Start2
+Drink:
+PRINT "Good job."
+ goto Start2
+dice:
+PRINT "This game is high low, you bet money on a dice roll, the total is added."
+PRINT "Above 6 is high and 6 and below are low. You have "; Gold&; " Gold."
+PRINT "The last roll was"; X% + Y% + Z%
+INPUT "Do you want low or high?"; Choose$
+ if Choose$ = "High" THEN Choose% = 1
+ if Choose$ = "high" THEN Choose% = 1
+ if Choose$ = "HIGH" THEN Choose% = 1
+ if Choose$ = "Low" THEN Choose% = 2
+ if Choose$ = "low" THEN Choose% = 2
+ if Choose$ = "LOW" THEN Choose% = 2
+ if Choose$ = "Leave" THEN goto Start2
+ if Choose$ = "leave" THEN goto Start2
+ if Choose$ = "LEAVE" THEN goto Start2 else INPUT "How much gold do you bet"; GoldBet&
+ if Gold& - GoldBet& < 0 THEN  goto dice
+
+CLS
+RANDOMIZE TIMER
+  X% = INT(RND * 6) + 1
+  Y% = INT(RND * 6) + 1
+ if X% + Y% >= 6 THEN Win% = 1
+ if X% + Y% < 6 THEN Win% = 2
+ if Win% = Choose% THEN  goto DiceWin
+ if Win% <> Choose% THEN  goto DiceLose
+DiceWin:
+Gold& = Gold& + (GoldBet& * 2)
+PRINT "You win"
+ goto dice
+DiceLose:
+Gold& = Gold& - GoldBet&
+PRINT "You lose"
+ goto dice
+
+
+
+Damage:
+
+  if WeapStr& = 0 THEN  goto Fist
+  if WeapStr& = 2 THEN  goto Dagger
+  if WeapStr& = 4 THEN  goto Spear
+  if WeapStr& = 6 THEN  goto Club
+  if WeapStr& = 8 THEN  goto Trident
+  if WeapStr& = 9 THEN  goto Short
+  if WeapStr& = 11 THEN  goto Mace
+  if WeapStr& = 13 THEN  goto Sycal
+  if WeapStr& = 15 THEN  goto LongS
+  if WeapStr& = 17 THEN  goto Hawk
+  if WeapStr& = 19 THEN  goto Whip
+  if WeapStr& = 21 THEN  goto Broad
+  if WeapStr& = 23 THEN  goto Morning
+  if WeapStr& = 25 THEN  goto Bastard
+  if WeapStr& = 28 THEN  goto Battle
+  if WeapStr& = 35 THEN  goto Two
+  if WeapStr& = 42 THEN  goto Glass
+  if WeapStr& = 47 THEN  goto Gismare
+  if WeapStr& = 52 THEN  goto Magic
+  if WeapStr& = 60 THEN  goto Flame
+  if WeapStr& = 75 THEN  goto Xcal
+  if WeapStr& = 100 THEN  goto MeteAx
+
+
+
+Fist:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 1) + 1
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+Dagger:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 3) + 1
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+Spear:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 4) + 2
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+
+Club:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 5) + 3
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+
+Trident:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 6) + 4
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+Short:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 8) + 3
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+
+Mace:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 9) + 4
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+Sycal:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 9) + 6
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+LongS:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 8) + 10
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+Hawk:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 8) + 10
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+Whip:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 10) + 10
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+Broad:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 15) + 10
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+Morning:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 22) + 5
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+Bastard:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 20) + 10
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+Battle:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 25) + 10
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+Two:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 25) + 15
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+Glass:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 35) + 10
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+Gismare:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 35) + 15
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+Magic:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 27) + 30
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+Flame:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 40) + 20
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+Xcal:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 45) + 40
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+MeteAx:
+RANDOMIZE TIMER
+WeapDam& = int(RND * 60) + 60
+ if X& = 1 THEN  goto AWGRHib
+ if X& = 2 THEN  goto AWSHib
+ if X& = 3 THEN  goto AWFHib
+ if X& = 4 THEN  goto AMCHib
+ if X& = 5 THEN  goto AMPHib
+ if X& = 6 THEN  goto AMTHib
+ if X& = 7 THEN  goto ASDKHib
+ if X& = 8 THEN  goto ASLHib
+ if X& = 9 THEN  goto ASMHib
+ if X& = 10 THEN  goto AVDHib
+ if X& = 11 THEN  goto AVWHib
+ if X& = 12 THEN  goto AVZHib
+ if X& = 13 THEN  goto ABDHib
+ if X& = 14 THEN  goto ABWHib
+ if X& = 15 THEN  goto ABTHib
+
+
+
+Save:
+    CLS
+    PRINT "Saving game please wait."
+    SLEEP 3
+    OPEN Name$ FOR OUTPUT AS #1
+        WRITE #1, Str&, Dex&, Con&, THealth&, Health&, Weap&, ExpGoal&, Exe&, WeapStr&, ArmStr&, RRingStr&, LRingStr&, Level&, Gold&, Score&, WepHave$, ArmHave$, LHave$, RHave$, DidCheat$, LRing&, RRing&
+        INPUT "Press enter (return)"; Dummy$
+    CLOSE #1
+    'Print the file to the screen.
+ goto Start2
+
+Load:
+    PRINT "Do you want to load a file (1)Yes (2)No"
+    INPUT Load%
+     if Load% = 1  goto TypeName
+     if Load% = 2  goto Start2
+TypeName:
+    INPUT "Type the name of the file you wish to load (The name of your charater) "; LName$
+    PRINT "Is "; LName$; " correct (1)Yes (2)No."
+    INPUT Dummy&
+     if Dummy& = 1 THEN  goto Loader2
+     if Dummy& = 2 THEN  goto TypeName
+Loader:
+    PRINT "Loading "; Name$; " please wait"
+    SLEEP 2
+    OPEN Name$ FOR INPUT AS #1
+    CLS
+    PRINT "Entries in file:": PRINT
+    INPUT #1, Str&, Dex&, Con&, THealth&, Health&, Weap&, ExpGoal&, Exe&, WeapStr&, ArmStr&, RRingStr&, LRingStr&, Level&, Gold&, Score&, WepHave$, ArmHave$, LHave$, RHave$, DidCheat$, LRing&, RRing&
+    INPUT "Hit any key to continue"; Dummy
+    CLOSE #1
+ goto Start2
+Loader2:
+    PRINT "Loading "; LName$; " please wait"
+    Name$ = LName$
+    SLEEP 2
+    OPEN LName$ FOR INPUT AS #1
+    CLS
+    PRINT "Entries in file:": PRINT
+    INPUT #1, Str&, Dex&, Con&, THealth&, Health&, Weap&, ExpGoal&, Exe&, WeapStr&, ArmStr&, RRingStr&, LRingStr&, Level&, Gold&, Score&, WepHave$, ArmHave$, LHave$, RHave$, DidCheat$, LRing&, RRing&
+    INPUT "Hit any key to continue"; Dummy
+    CLOSE #1
+ goto Start2
+
+
+WhatsNew:
+PRINT "Version .01: Added in rings."
+PRINT "Version .01a: Fixed rings."
+PRINT "Version .02: Added in 5th tier of monsters into arena.  Added 'Alchemist' job."
+PRINT "Version .02a: Fixed a crazy glitch that froze my PC several dozen times."
+PRINT "Version .02b: ACTUALLY fixed the glitch."
+PRINT ""
+PRINT "Next Version .02c: Plan to add in more to do in Alchemy, more weapons/armor/rings."
+PRINT "Version .03: Add in more tiers of creatures to arena, incl. final boss.  Add in another job."
+PRINT "Version .04: Who knows?  Maybe some kind of GUI interface."
+PRINT ""
+PRINT ""
+PRINT ""
+PRINT ""
+PRINT ""
+PRINT ""
+PRINT ""
+PRINT ""
+PRINT ""
+PRINT ""
+INPUT "Press Any Key"; Dummy$
+ goto Start2
+
+
+
+
+Job:
+CLS
+PRINT "You're looking for a job eh?, Well just what kind of job are you lookin'"
+PRINT "for?  (1)Carpenter, (2)Tavern Owner, (3)Patrol Man, or (4)Alchemist"
+INPUT Job&
+ if Job& = 1 THEN  goto JCarp
+ if Job& = 2 THEN  goto JTavern
+ if Job& = 3 THEN  goto JPatrol
+ if Job& = 4 THEN  goto JAlc
+JCarp:
+INPUT "Not implemented as of now"; Dummy$
+ goto Start2
+JTavern:
+INPUT "Not implemented as of now"; Dummy$
+ goto Start2
+JPatrol:
+BunnyHealth& = 50
+FoxHealth& = 78
+WolfHealth& = 126
+BearHealth& = 160
+ThiefHealth& = 213
+MadmanHealth& = 364
+HoboHealth& = 250
+PunkHealth& = 338
+ManbearpigHealth& = 424
+GhostHealth& = 500
+ZombieHealth& = 600
+WyrmHealth& = 756
+DElfHealth& = 780
+HermitHealth& = 653
+MarilithHealth& = 1000
+LGirlHealth& = 1000
+PuppyHealth& = 1100
+ASwordHealth& = 1300
+AArmorHealth& = 1350
+PojoHealth& = 1750
+LHulkHealth& = 2500
+QCQHealth& = 4000
+DDurlingHealth& = 10000
+Defe& = Dex& + ArmStr&
+TRing& = RRing& + LRing&
+
+PRINT "Ahh, so you wish to help keep our fine city safe from monsters eh?"
+JPatrolling:
+CLS
+PRINT "So here's the deal.  You select an area of the city to patrol, and we pay you."
+PRINT "Of course, there's a catch.  The easier the area, the less we pay."
+PRINT "Don't get cocky though, you'll be on your own out there.
+
+PRINT "Area", "", "D ifficulty", "Reward"
+PRINT "(1)Residential", "", " Easy", " 75 Gold"
+PRINT "(2)Shops", "", " Medium", " 150 Gold"
+PRINT "(3)Slums", "", " Hard", " 250 Gold"
+PRINT "(4)Dungeon", "", " Very Hard", " 500 Gold"
+PRINT "(5)Cave", "", " Elite", " 800 Gold"
+PRINT "(6)Unknown", "", " God-Like", "?  Gold"
+PRINT "(7)Exit", "", " --", " --"
+
+      INPUT "Which area would you like to patrol?"; PatrolA&
+ if PatrolA& = 1 THEN  goto Patrolling1
+ if PatrolA& = 2 THEN  goto Patrolling2
+ if PatrolA& = 3 THEN  goto Patrolling3
+ if PatrolA& = 4 THEN  goto Patrolling4
+ if PatrolA& = 5 THEN  goto Patrolling5
+ if PatrolA& = 6 THEN  goto Patrolling6
+ if PatrolA& = 7 THEN  goto Start2
+
+
+
+JAlc:
+PRINT "Your job is to mix stuff and make potions, depending upon the value, you will get"
+PRINT "Paid. Understand? I hope so."
+JAMixer:
+CLS
+PRINT "You have 6 items you can throw into a bowl and mix, only two can be mixed"
+PRINT "together at the same time. Each item cost something to aquire."
+PRINT " They are as follows,"
+
+PRINT "Item", "", "Number", "Cost"
+PRINT "Slime ", "", "  1", " 5"
+PRINT "Eye of Newt", "", "  2", " 7"
+PRINT "Toe of Slig", "", "  3", " 9"
+PRINT "Bit of Slug", "", "  4", " 8"
+PRINT "Spittle of Bee", "  5", " 6"
+PRINT "Powdered Dragon Scale", "  6", "28"
+PRINT "Exit", "", "  7", "28"
+
+ 
+    INPUT "Item 1"; itemO&
+    INPUT "Item 2"; itemT&
+ if itemO& = 1 THEN mixer& = 4
+ if itemO& = 1 THEN GMake& = GMake& - 5
+ if itemO& = 2 THEN mixer& = 8
+ if itemO& = 2 THEN GMake& = GMake& - 7
+ if itemO& = 3 THEN mixer& = -5
+ if itemO& = 3 THEN GMake& = GMake& - 9
+ if itemO& = 4 THEN mixer& = 10
+ if itemO& = 4 THEN GMake& = GMake& - 8
+ if itemO& = 5 THEN mixer& = 15
+ if itemO& = 5 THEN GMake& = GMake& - 6
+ if itemO& = 6 THEN mixer& = 17
+ if itemO& = 6 THEN GMake& = GMake& - 28
+ if itemO& = 7 THEN  goto Start2
+ if itemO& > 7 THEN  goto JAMixer
+ if itemT& = 1 THEN Mixer2& = 5
+ if itemT& = 1 THEN GMake& = GMake& - 5
+ if itemT& = 2 THEN Mixer2& = -1
+ if itemT& = 2 THEN GMake& = GMake& - 7
+ if itemT& = 3 THEN Mixer2& = 13
+ if itemT& = 3 THEN GMake& = GMake& - 9
+ if itemT& = 4 THEN Mixer2& = 8
+ if itemT& = 4 THEN GMake& = GMake& - 8
+ if itemT& = 5 THEN Mixer2& = -3
+ if itemT& = 5 THEN GMake& = GMake& - 6
+ if itemT& = 6 THEN Mixer2& = 17
+ if itemT& = 6 THEN GMake& = GMake& - 28
+ if itemT& = 7 THEN  goto Start2
+ if itemT& > 7 THEN  goto JAMixer
+ if mixer& + Mixer2& < 10 THEN GMake& = 5
+ if mixer& + Mixer2& > 10 THEN GMake& = 4
+ if mixer& + Mixer2& = 10 THEN GMake& = 7
+ if mixer& + Mixer2& = 13 THEN GMake& = GMake& + 16
+ if mixer& + Mixer2& <> 13 THEN GMake& = GMake& + -2
+ if mixer& + Mixer2& <> 1 THEN GMake& = GMake& + -6
+ if mixer& + Mixer2& = 7 THEN GMake& = GMake& + 8
+ if mixer& + Mixer2& = 12 THEN GMake& = GMake& + 14
+ if mixer& + Mixer2& >= 21 THEN GMake& = GMake& + 20
+ if mixer& + Mixer2& <> 7 THEN GMake& = GMake& + -8
+ if mixer& + Mixer2& = 14 THEN GMake& = GMake& + 14
+PRINT "You made "; GMake&; " Gold."
+Gold& = Gold& + GMake&
+INPUT "Press enter (return)"; Dummy$
+ goto JAMixer
+
+
+
+
+Prize:
+ if SpareItem$ <> "nodda"  goto Prize2
+RANDOMIZE TIMER
+ItemGiven& = INT(RND * 9) + 1
+ if ItemGiven& = 1 THEN SpareItem$ = "Rare Item"
+ if ItemGiven& = 2 THEN SpareItem$ = "Gold Nugget"
+ if ItemGiven& = 3 THEN SpareItem$ = "Bag of Silver"
+ if ItemGiven& = 4 THEN SpareItem$ = "Platinum Cup"
+ if ItemGiven& = 5 THEN SpareItem$ = "Oak Box"
+ if ItemGiven& = 6 THEN SpareItem$ = "Rare 'Herbs'"
+ if ItemGiven& = 7 THEN SpareItem$ = "???"
+ if ItemGiven& = 8 THEN SpareItem$ = "Broken Item"
+ if ItemGiven& = 9 THEN SpareItem$ = "Tapistry"
+PRINT "Searching among the dead body you find a "; SpareItem$
+INPUT "Press enter (return)"; Dummy$
+ goto Start2
+
+Prize2:
+ if SpareItem2$ <> "nothingness"  goto Prize3
+RANDOMIZE TIMER
+ItemGiven& = int(RND * 9) + 1
+ if ItemGiven& = 1 THEN SpareItem2$ = "Rare Item"
+ if ItemGiven& = 2 THEN SpareItem2$ = "Gold Nugget"
+ if ItemGiven& = 3 THEN SpareItem2$ = "Bag of Silver"
+ if ItemGiven& = 4 THEN SpareItem2$ = "Platinum Cup"
+ if ItemGiven& = 5 THEN SpareItem2$ = "Oak Box"
+ if ItemGiven& = 6 THEN SpareItem2$ = "Rare 'Herbs'"
+ if ItemGiven& = 7 THEN SpareItem2$ = "???"
+ if ItemGiven& = 8 THEN SpareItem2$ = "Broken Item"
+ if ItemGiven& = 9 THEN SpareItem2$ = "Tapistry"
+PRINT "Searching among the dead body you find a "; SpareItem2$
+INPUT "Press enter (return)"; Dummy$
+ goto Start2
+
+Prize3:
+ if SpareItem3$ <> "nothin'" THEN PRINT "You already have 3 items, sell one first"
+ if SpareItem3$ <> "nothin'" THEN SLEEP 2
+ if SpareItem3$ <> "nothin'"  goto Stats
+RANDOMIZE TIMER
+ItemGiven& = int(RND * 9) + 1
+ if ItemGiven& = 1 THEN SpareItem3$ = "Rare Item"
+ if ItemGiven& = 2 THEN SpareItem3$ = "Gold Nugget"
+ if ItemGiven& = 3 THEN SpareItem3$ = "Bag of Silver"
+ if ItemGiven& = 4 THEN SpareItem3$ = "Platinum Cup"
+ if ItemGiven& = 5 THEN SpareItem3$ = "Oak Box"
+ if ItemGiven& = 6 THEN SpareItem3$ = "Rare 'Herbs'"
+ if ItemGiven& = 7 THEN SpareItem3$ = "???"
+ if ItemGiven& = 8 THEN SpareItem3$ = "Broken Item"
+ if ItemGiven& = 9 THEN SpareItem3$ = "Tapistry"
+PRINT "Searching among the dead body you find a "; SpareItem3$
+INPUT "Press enter (return)"; Dummy$
+ goto Start2
+}
